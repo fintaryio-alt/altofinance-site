@@ -18,32 +18,33 @@
   body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
   .wrap{width:100%;max-width:640px;margin:0 auto;padding:24px 20px 48px;flex:1;display:flex;flex-direction:column}
 
-  /* Topbar */
-  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:12px}
   .logo{font-family:'Playfair Display',serif;font-weight:700;font-size:20px;letter-spacing:-.5px;color:var(--ink);text-decoration:none}
   .logo span{color:var(--red)}
-  .back-site{font-size:12px;color:var(--ink3);text-decoration:none}
+  .top-right{display:flex;align-items:center;gap:14px}
+  .lang{display:flex;gap:2px;font-size:12px}
+  .lang button{background:none;border:none;font-family:inherit;font-size:12px;color:var(--ink3);cursor:pointer;padding:3px 5px;font-weight:500}
+  .lang button.on{color:var(--red)}
+  .back-site{font-size:12px;color:var(--ink3);text-decoration:none;white-space:nowrap}
   .back-site:hover{color:var(--red)}
 
-  /* Progress */
   .progress{height:4px;background:var(--cream3);border-radius:4px;overflow:hidden;margin:18px 0 4px;opacity:0;transition:opacity .3s}
   .progress.show{opacity:1}
   .progress-bar{height:100%;background:var(--red);width:0;transition:width .4s cubic-bezier(.4,0,.2,1)}
   .step-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--red);font-weight:500;height:14px}
 
-  /* Card / screens */
   .screen{display:none;flex:1;flex-direction:column;justify-content:center;animation:fade .4s ease}
   .screen.active{display:flex}
   @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
   .label{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--red);font-weight:500;margin-bottom:16px}
   h1{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(28px,7vw,42px);line-height:1.1;letter-spacing:-1px;margin-bottom:16px}
+  h1 em{font-style:italic;color:var(--red)}
   .lead{font-size:16px;font-weight:300;color:var(--ink2);margin-bottom:14px;line-height:1.7}
   .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 28px}
   .chip{font-size:12px;color:var(--ink3);background:var(--white);border:1px solid var(--border);padding:8px 14px;border-radius:40px;display:inline-flex;align-items:center;gap:7px}
   .chip svg{width:14px;height:14px;stroke:var(--red);fill:none;stroke-width:1.6}
 
-  /* Question */
   .q-num{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:10px}
   .q-text{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(22px,5.5vw,30px);line-height:1.25;margin-bottom:26px;color:var(--ink)}
   .options{display:flex;flex-direction:column;gap:11px}
@@ -55,7 +56,6 @@
   .opt.sel{border-color:var(--red);background:var(--red-soft)}
   .opt.sel .dot{border-color:var(--red);background:var(--red);box-shadow:inset 0 0 0 3px var(--red-soft)}
 
-  /* Buttons */
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--ink);color:var(--white);border:none;padding:16px 30px;font-family:'Inter',sans-serif;font-size:15px;font-weight:500;border-radius:10px;cursor:pointer;text-decoration:none;transition:background .2s;width:100%}
   .btn:hover{background:var(--red)}
   .btn.red{background:var(--red)}
@@ -63,17 +63,15 @@
   .nav{display:flex;gap:12px;margin-top:24px;align-items:center}
   .btn-back{background:none;border:none;color:var(--ink3);font-family:inherit;font-size:14px;cursor:pointer;padding:10px;white-space:nowrap}
   .btn-back:hover{color:var(--ink)}
-  .trust{font-size:12px;color:var(--ink3);margin-top:18px;display:flex;align-items:center;gap:7px;justify-content:center}
-  .trust svg{width:14px;height:14px;stroke:var(--green);fill:none;stroke-width:1.6}
+  .trust{font-size:12px;color:var(--ink3);margin-top:18px;display:flex;align-items:center;gap:7px;justify-content:center;text-align:center}
+  .trust svg{width:14px;height:14px;stroke:var(--green);fill:none;stroke-width:1.6;flex:0 0 14px}
 
-  /* Result */
   .gauge{text-align:center;margin:8px 0 6px}
   .score-num{font-family:'Playfair Display',serif;font-weight:700;font-size:72px;line-height:1;letter-spacing:-2px}
   .score-100{font-size:24px;color:var(--ink4);font-weight:400}
   .tier{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;margin-top:6px}
   .diag{font-size:15px;font-weight:300;color:var(--ink2);text-align:center;margin:14px auto 26px;max-width:480px;line-height:1.7}
   .bars{display:flex;flex-direction:column;gap:14px;margin-bottom:30px}
-  .bar-row{}
   .bar-head{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
   .bar-head .nm{font-weight:500}
   .bar-head .vl{color:var(--ink3)}
@@ -99,23 +97,26 @@
 <div class="wrap">
   <div class="top">
     <a href="../" class="logo">ALTO<span>.</span></a>
-    <a href="../" class="back-site">← На сайт</a>
+    <div class="top-right">
+      <div class="lang" id="lang">
+        <button data-l="ru" class="on" onclick="setLang('ru')">RU</button>
+        <button data-l="kz" onclick="setLang('kz')">KZ</button>
+        <button data-l="en" onclick="setLang('en')">EN</button>
+      </div>
+      <a href="../" class="back-site" id="backSite">← На сайт</a>
+    </div>
   </div>
   <div class="step-label" id="stepLabel"></div>
   <div class="progress" id="progress"><div class="progress-bar" id="progressBar"></div></div>
 
   <!-- INTRO -->
   <section class="screen active" id="intro">
-    <div class="label">Финансовый пульс</div>
-    <h1>Здоров ли ваш бизнес <em style="font-family:'Playfair Display';font-style:italic;color:var(--red)">финансово</em>?</h1>
-    <p class="lead">10 вопросов за 5 минут. В конце — честная оценка от 0 до 100 и 3 точки, где вы прямо сейчас теряете или не видите деньги.</p>
-    <div class="meta-row">
-      <span class="chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>5 минут</span>
-      <span class="chip"><svg viewBox="0 0 24 24"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/></svg>Анонимно</span>
-      <span class="chip"><svg viewBox="0 0 24 24"><line x1="4" y1="20" x2="4" y2="13"/><line x1="12" y1="20" x2="12" y2="9"/><line x1="20" y1="20" x2="20" y2="5"/></svg>Сразу результат</span>
-    </div>
-    <button class="btn red" onclick="start()">Пройти пульс →</button>
-    <div class="trust"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Без регистрации. Данные никуда не уходят.</div>
+    <div class="label" id="iLabel"></div>
+    <h1 id="iH1"></h1>
+    <p class="lead" id="iLead"></p>
+    <div class="meta-row" id="iChips"></div>
+    <button class="btn red" id="iStart" onclick="start()"></button>
+    <div class="trust" id="iTrust"></div>
   </section>
 
   <!-- QUESTION -->
@@ -123,26 +124,23 @@
     <div class="q-num" id="qNum"></div>
     <div class="q-text" id="qText"></div>
     <div class="options" id="options"></div>
-    <div class="nav"><button class="btn-back" id="backBtn" onclick="prev()">← Назад</button></div>
+    <div class="nav"><button class="btn-back" id="backBtn" onclick="prev()"></button></div>
   </section>
 
   <!-- RESULT -->
   <section class="screen" id="result">
-    <div class="label" style="text-align:center;margin-bottom:6px">Ваш результат</div>
+    <div class="label" id="rLabel" style="text-align:center;margin-bottom:6px"></div>
     <div class="gauge"><span class="score-num" id="scoreNum">0</span><span class="score-100">/100</span><div class="tier" id="tier"></div></div>
     <p class="diag" id="diag"></p>
     <div class="bars" id="bars"></div>
-    <div class="recs">
-      <h3>3 точки, с которых начать</h3>
-      <div id="recList"></div>
-    </div>
+    <div class="recs"><h3 id="rRecsH"></h3><div id="recList"></div></div>
     <div class="cta-box">
-      <div class="ct-l">Следующий шаг</div>
-      <div class="ct-h">Разберём эти точки на вашем бизнесе — бесплатно</div>
-      <div class="ct-s">45 минут. Уходите с понятным планом, а не с продажей.</div>
-      <a class="btn red" id="waBtn" target="_blank" rel="noopener">Получить разбор в WhatsApp →</a>
+      <div class="ct-l" id="rCtaL"></div>
+      <div class="ct-h" id="rCtaH"></div>
+      <div class="ct-s" id="rCtaS"></div>
+      <a class="btn red" id="waBtn" target="_blank" rel="noopener"></a>
     </div>
-    <div class="restart"><button onclick="restart()">Пройти заново</button></div>
+    <div class="restart"><button id="rRestart" onclick="restart()"></button></div>
   </section>
 
   <div class="foot">ALTO Finance · Финансы без переводчика</div>
@@ -150,158 +148,239 @@
 
 <script>
 const WA = "77070385020";
+let lang = "ru";
 
-// Контекстные вопросы (не в баллах — для персонализации и сообщения)
+const T = {
+  ru:{ backSite:"← На сайт", step:(a,b)=>`Шаг ${a} из ${b}`, done:"Готово",
+    iLabel:"Финансовый пульс", iH1:"Здоров ли ваш бизнес <em>финансово</em>?",
+    iLead:"10 вопросов за 5 минут. В конце — честная оценка от 0 до 100 и 3 точки, где вы прямо сейчас теряете или не видите деньги.",
+    chips:["5 минут","Анонимно","Сразу результат"], iStart:"Пройти пульс →",
+    iTrust:"Без регистрации. Данные никуда не уходят.", back:"← Назад",
+    rLabel:"Ваш результат", rRecsH:"3 точки, с которых начать",
+    ctaL:"Следующий шаг", ctaH:"Разберём эти точки на вашем бизнесе — бесплатно",
+    ctaS:"45 минут. Уходите с понятным планом, а не с продажей.",
+    wa:"Получить разбор в WhatsApp →", restart:"Пройти заново" },
+  kz:{ backSite:"← Сайтқа", step:(a,b)=>`${a} / ${b} қадам`, done:"Дайын",
+    iLabel:"Қаржылық тексеру", iH1:"Бизнесіңіз <em>қаржылық</em> жағынан сау ма?",
+    iLead:"5 минутта 10 сұрақ. Соңында — 0-ден 100-ге дейінгі әділ баға және сіз дәл қазір ақша жоғалтып не көрмей жүрген 3 нүкте.",
+    chips:["5 минут","Анонимді","Бірден нәтиже"], iStart:"Тексеруден өту →",
+    iTrust:"Тіркеусіз. Деректер еш жаққа кетпейді.", back:"← Артқа",
+    rLabel:"Сіздің нәтижеңіз", rRecsH:"Неден бастау керек: 3 нүкте",
+    ctaL:"Келесі қадам", ctaH:"Осы нүктелерді бизнесіңізде талдаймыз — тегін",
+    ctaS:"45 минут. Сатылыммен емес, түсінікті жоспармен кетесіз.",
+    wa:"WhatsApp арқылы талдау алу →", restart:"Қайта өту" },
+  en:{ backSite:"← To site", step:(a,b)=>`Step ${a} of ${b}`, done:"Done",
+    iLabel:"Financial pulse", iH1:"Is your business <em>financially</em> healthy?",
+    iLead:"10 questions in 5 minutes. At the end — an honest score from 0 to 100 and 3 spots where you're losing or not seeing money right now.",
+    chips:["5 minutes","Anonymous","Instant result"], iStart:"Take the pulse →",
+    iTrust:"No sign-up. Your data stays with you.", back:"← Back",
+    rLabel:"Your result", rRecsH:"3 places to start",
+    ctaL:"Next step", ctaH:"We'll break these points down on your business — free",
+    ctaS:"45 minutes. You leave with a clear plan, not a sales pitch.",
+    wa:"Get your breakdown on WhatsApp →", restart:"Retake" }
+};
+
+const dims = {
+  ru:["Прибыль","Касса","Учёт","Контроль","Рост"],
+  kz:["Пайда","Касса","Есеп","Бақылау","Өсу"],
+  en:["Profit","Cash","Accounting","Control","Growth"]
+};
+
 const context = [
-  { id:"sphere", num:"О бизнесе", text:"В какой сфере ваш бизнес?",
-    options:["Торговля / Kaspi-магазин","Услуги","Производство","Строительство","Общепит","Другое"] },
-  { id:"turnover", num:"О бизнесе", text:"Какой примерно оборот в месяц?",
-    options:["До 3 млн ₸","3–10 млн ₸","10–30 млн ₸","30+ млн ₸"] }
+  { id:"sphere",
+    num:{ru:"О бизнесе",kz:"Бизнес туралы",en:"About the business"},
+    text:{ru:"В какой сфере ваш бизнес?",kz:"Бизнесіңіз қай салада?",en:"What's your industry?"},
+    options:[
+      {ru:"Торговля / Kaspi-магазин",kz:"Сауда / Kaspi-дүкен",en:"Retail / Kaspi store"},
+      {ru:"Услуги",kz:"Қызмет көрсету",en:"Services"},
+      {ru:"Производство",kz:"Өндіріс",en:"Manufacturing"},
+      {ru:"Строительство",kz:"Құрылыс",en:"Construction"},
+      {ru:"Общепит",kz:"Қоғамдық тамақтандыру",en:"Food service"},
+      {ru:"Другое",kz:"Басқа",en:"Other"}]},
+  { id:"turnover",
+    num:{ru:"О бизнесе",kz:"Бизнес туралы",en:"About the business"},
+    text:{ru:"Какой примерно оборот в месяц?",kz:"Айлық айналымыңыз шамамен қанша?",en:"What's your approximate monthly turnover?"},
+    options:[
+      {ru:"До 3 млн ₸",kz:"3 млн ₸ дейін",en:"Under 3M ₸"},
+      {ru:"3–10 млн ₸",kz:"3–10 млн ₸",en:"3–10M ₸"},
+      {ru:"10–30 млн ₸",kz:"10–30 млн ₸",en:"10–30M ₸"},
+      {ru:"30+ млн ₸",kz:"30+ млн ₸",en:"30M+ ₸"}]}
 ];
 
-// Оцениваемые вопросы по 5 направлениям (баллы 0–100)
-const dims = ["Прибыль","Касса","Учёт","Контроль","Рост"];
 const questions = [
-  { dim:0, text:"Знаете точную чистую прибыль за прошлый месяц?",
-    options:[["Да, до тенге",100],["Примерно, в голове",50],["Нет",0]] },
-  { dim:0, text:"Знаете маржу по каждому продукту или направлению?",
-    options:[["Да, по каждому",100],["По основным",50],["Нет",0]] },
-  { dim:1, text:"Бывает, что нечем платить, хотя «на бумаге» прибыль есть?",
-    options:[["Никогда",100],["Иногда",50],["Регулярно",0]] },
-  { dim:1, text:"Видите будущие платежи на 4–6 недель вперёд?",
-    options:[["Да, есть платёжный календарь",100],["Держу в голове",40],["Нет",0]] },
-  { dim:2, text:"Где вы ведёте учёт денег?",
-    options:[["Управленческие отчёты / таблицы",100],["Только бухгалтерия для налоговой",40],["В тетради или в голове",0]] },
-  { dim:2, text:"Есть ОПиУ и ДДС, которые вы реально смотрите каждый месяц?",
-    options:[["Да, оба",100],["Что-то одно",50],["Нет",0]] },
-  { dim:3, text:"Контролируете, кто и сколько вам должен (дебиторка)?",
-    options:[["Да, по списку со сроками",100],["Примерно",50],["Нет",0]] },
-  { dim:3, text:"Знаете свою точку безубыточности?",
-    options:[["Да, точно",100],["Примерно",50],["Нет",0]] },
-  { dim:4, text:"Решения о закупках и расходах — по цифрам или по интуиции?",
-    options:[["По цифрам",100],["Смешанно",50],["По интуиции",0]] },
-  { dim:4, text:"Есть финансовый план или прогноз на 3–12 месяцев?",
-    options:[["Да, со сценариями",100],["Примерный",50],["Нет",0]] }
+  { dim:0, t:{ru:"Знаете точную чистую прибыль за прошлый месяц?",kz:"Өткен айдағы нақты таза пайдаңызды білесіз бе?",en:"Do you know your exact net profit for last month?"},
+    o:[[{ru:"Да, до тенге",kz:"Иә, тиынына дейін",en:"Yes, to the tenge"},100],[{ru:"Примерно, в голове",kz:"Шамамен, ойымда",en:"Roughly, in my head"},50],[{ru:"Нет",kz:"Жоқ",en:"No"},0]]},
+  { dim:0, t:{ru:"Знаете маржу по каждому продукту или направлению?",kz:"Әр өнім не бағыт бойынша маржаны білесіз бе?",en:"Do you know the margin on each product or line?"},
+    o:[[{ru:"Да, по каждому",kz:"Иә, әрқайсысы бойынша",en:"Yes, each one"},100],[{ru:"По основным",kz:"Негізгілері бойынша",en:"The main ones"},50],[{ru:"Нет",kz:"Жоқ",en:"No"},0]]},
+  { dim:1, t:{ru:"Бывает, что нечем платить, хотя «на бумаге» прибыль есть?",kz:"«Қағаз жүзінде» пайда бар, бірақ төлеуге ақша жоқ кездесе ме?",en:"Do you ever run out of cash to pay, even when there's profit 'on paper'?"},
+    o:[[{ru:"Никогда",kz:"Ешқашан",en:"Never"},100],[{ru:"Иногда",kz:"Кейде",en:"Sometimes"},50],[{ru:"Регулярно",kz:"Жиі",en:"Regularly"},0]]},
+  { dim:1, t:{ru:"Видите будущие платежи на 4–6 недель вперёд?",kz:"Алдағы 4–6 аптадағы төлемдерді алдын ала көресіз бе?",en:"Do you see your payments 4–6 weeks ahead?"},
+    o:[[{ru:"Да, есть платёжный календарь",kz:"Иә, төлем күнтізбесі бар",en:"Yes, I have a payment calendar"},100],[{ru:"Держу в голове",kz:"Ойымда ұстаймын",en:"I keep it in my head"},40],[{ru:"Нет",kz:"Жоқ",en:"No"},0]]},
+  { dim:2, t:{ru:"Где вы ведёте учёт денег?",kz:"Ақша есебін қайда жүргізесіз?",en:"Where do you track your money?"},
+    o:[[{ru:"Управленческие отчёты / таблицы",kz:"Басқарушылық есеп / кестелер",en:"Management reports / spreadsheets"},100],[{ru:"Только бухгалтерия для налоговой",kz:"Тек салық үшін бухгалтерия",en:"Only tax accounting"},40],[{ru:"В тетради или в голове",kz:"Дәптерде не ойда",en:"In a notebook or my head"},0]]},
+  { dim:2, t:{ru:"Есть ОПиУ и ДДС, которые вы реально смотрите каждый месяц?",kz:"Ай сайын нақты қарайтын ОПиУ мен ДДС бар ма?",en:"Do you have a P&L and Cash Flow you actually review monthly?"},
+    o:[[{ru:"Да, оба",kz:"Иә, екеуі де",en:"Yes, both"},100],[{ru:"Что-то одно",kz:"Біреуі",en:"One of them"},50],[{ru:"Нет",kz:"Жоқ",en:"No"},0]]},
+  { dim:3, t:{ru:"Контролируете, кто и сколько вам должен (дебиторка)?",kz:"Сізге кім қанша қарыз екенін бақылайсыз ба (дебиторлық)?",en:"Do you track who owes you and how much (receivables)?"},
+    o:[[{ru:"Да, по списку со сроками",kz:"Иә, мерзімімен тізім бойынша",en:"Yes, a list with due dates"},100],[{ru:"Примерно",kz:"Шамамен",en:"Roughly"},50],[{ru:"Нет",kz:"Жоқ",en:"No"},0]]},
+  { dim:3, t:{ru:"Знаете свою точку безубыточности?",kz:"Залалсыздық нүктеңізді білесіз бе?",en:"Do you know your break-even point?"},
+    o:[[{ru:"Да, точно",kz:"Иә, нақты",en:"Yes, exactly"},100],[{ru:"Примерно",kz:"Шамамен",en:"Roughly"},50],[{ru:"Нет",kz:"Жоқ",en:"No"},0]]},
+  { dim:4, t:{ru:"Решения о закупках и расходах — по цифрам или по интуиции?",kz:"Сатып алу мен шығын туралы шешімдер — сандарға ма, әлде түйсікке ме?",en:"Are your spending and purchasing decisions based on numbers or gut?"},
+    o:[[{ru:"По цифрам",kz:"Сандарға",en:"On numbers"},100],[{ru:"Смешанно",kz:"Аралас",en:"A mix"},50],[{ru:"По интуиции",kz:"Түйсікке",en:"On gut"},0]]},
+  { dim:4, t:{ru:"Есть финансовый план или прогноз на 3–12 месяцев?",kz:"3–12 айға қаржылық жоспар не болжам бар ма?",en:"Do you have a financial plan or forecast for 3–12 months?"},
+    o:[[{ru:"Да, со сценариями",kz:"Иә, сценарийлермен",en:"Yes, with scenarios"},100],[{ru:"Примерный",kz:"Шамалап",en:"A rough one"},50],[{ru:"Нет",kz:"Жоқ",en:"No"},0]]}
 ];
 
 const recMap = [
-  "<b>Постройте ОПиУ.</b> Увидите реальную чистую прибыль и маржу по каждому направлению — почти всегда 1–2 позиции тихо тянут весь бизнес в минус.",
-  "<b>Заведите платёжный календарь на 6 недель.</b> Кассовый разрыв виден до того, как случился — уходит паника «нечем платить завтра».",
-  "<b>Отделите управленческий учёт от бухгалтерии.</b> Бухгалтерия считает для государства. Вам нужны цифры для решений — это разные вещи.",
-  "<b>Возьмите дебиторку под контроль.</b> Зависшие у клиентов деньги — это бесплатный кредит, который вы им выдали. Список со сроками возвращает их в кассу.",
-  "<b>Сделайте финмодель на 3 сценария (MIN/BASE/MAX).</b> Тогда решения о найме и закупках принимаются по цифрам, а не на ощущение."
+  {ru:"<b>Постройте ОПиУ.</b> Увидите реальную чистую прибыль и маржу по каждому направлению — почти всегда 1–2 позиции тихо тянут весь бизнес в минус.",
+   kz:"<b>ОПиУ жасаңыз.</b> Әр бағыттың нақты таза пайдасы мен маржасын көресіз — әдетте 1–2 позиция бүкіл бизнесті байқаусыз минусқа сүйрейді.",
+   en:"<b>Build a P&L.</b> You'll see real net profit and margin per line — almost always 1–2 items quietly drag the whole business into the red."},
+  {ru:"<b>Заведите платёжный календарь на 6 недель.</b> Кассовый разрыв виден до того, как случился — уходит паника «нечем платить завтра».",
+   kz:"<b>6 апталық төлем күнтізбесін жасаңыз.</b> Кассалық алшақтық болмай тұрып көрінеді — «ертең төлеуге ақша жоқ» дүрбелеңі жойылады.",
+   en:"<b>Set up a 6-week payment calendar.</b> A cash gap becomes visible before it hits — the 'nothing to pay with tomorrow' panic disappears."},
+  {ru:"<b>Отделите управленческий учёт от бухгалтерии.</b> Бухгалтерия считает для государства. Вам нужны цифры для решений — это разные вещи.",
+   kz:"<b>Басқарушылық есепті бухгалтериядан бөліңіз.</b> Бухгалтерия мемлекет үшін санайды. Сізге шешім қабылдауға арналған сандар керек — бұл бөлек нәрсе.",
+   en:"<b>Separate management accounting from bookkeeping.</b> Bookkeeping counts for the state. You need numbers for decisions — those are different things."},
+  {ru:"<b>Возьмите дебиторку под контроль.</b> Зависшие у клиентов деньги — это бесплатный кредит, который вы им выдали. Список со сроками возвращает их в кассу.",
+   kz:"<b>Дебиторлық қарызды бақылауға алыңыз.</b> Клиенттерде қалып қойған ақша — сіз оларға берген тегін несие. Мерзімімен тізім оларды кассаға қайтарады.",
+   en:"<b>Get receivables under control.</b> Money stuck with clients is a free loan you gave them. A list with due dates brings it back to your cash."},
+  {ru:"<b>Сделайте финмодель на 3 сценария (MIN/BASE/MAX).</b> Тогда решения о найме и закупках принимаются по цифрам, а не на ощущение.",
+   kz:"<b>3 сценарийлі қаржы моделін жасаңыз (MIN/BASE/MAX).</b> Сонда жалдау мен сатып алу туралы шешімдер түйсікпен емес, сандармен қабылданады.",
+   en:"<b>Build a 3-scenario financial model (MIN/BASE/MAX).</b> Then hiring and purchasing decisions are made on numbers, not on gut feel."}
 ];
 
 const tiers = [
-  { min:0,  max:40,  name:"Финансы в тумане", diag:"Вы ведёте сильный бизнес почти вслепую: решения на ощупь, реальную прибыль и риски не видно. Хорошая новость — здесь самый быстрый рост: навести порядок = сразу найти деньги, которые уже у вас есть." },
-  { min:41, max:70, name:"Система есть, но дырявая", diag:"База заложена, но часть денег утекает в слепых зонах — и именно они тормозят рост. Закрыть 2–3 дыры обычно даёт больше, чем новые продажи." },
-  { min:71, max:100, name:"Под контролем", diag:"Крепкая финансовая база — вы видите свои цифры. Теперь задача не «навести порядок», а расти агрессивнее и не потерять контроль на масштабе." }
+  { min:0, max:40,
+    name:{ru:"Финансы в тумане",kz:"Қаржы тұманда",en:"Finances in the fog"},
+    diag:{ru:"Вы ведёте сильный бизнес почти вслепую: решения на ощупь, реальную прибыль и риски не видно. Хорошая новость — здесь самый быстрый рост: навести порядок = сразу найти деньги, которые уже у вас есть.",
+      kz:"Сіз күшті бизнесті дерлік соқыр күйде жүргізіп жатырсыз: шешімдер түйсікпен, нақты пайда мен тәуекелдер көрінбейді. Жақсы жаңалық — мұнда өсу ең жылдам: тәртіп орнату = бұрыннан бар ақшаны бірден табу.",
+      en:"You run a strong business almost blind: decisions by feel, real profit and risks invisible. The good news — this is where growth is fastest: order = immediately finding money you already have."}},
+  { min:41, max:70,
+    name:{ru:"Система есть, но дырявая",kz:"Жүйе бар, бірақ тесік",en:"A system, but a leaky one"},
+    diag:{ru:"База заложена, но часть денег утекает в слепых зонах — и именно они тормозят рост. Закрыть 2–3 дыры обычно даёт больше, чем новые продажи.",
+      kz:"Негіз қаланған, бірақ ақшаның бір бөлігі көзге көрінбейтін аймақтарда ағып кетеді — дәл солар өсуді тежейді. 2–3 тесікті жабу әдетте жаңа сатылымнан көп береді.",
+      en:"The foundation is there, but some money leaks in blind spots — and those are what slow your growth. Closing 2–3 leaks usually beats new sales."}},
+  { min:71, max:100,
+    name:{ru:"Под контролем",kz:"Бақылауда",en:"Under control"},
+    diag:{ru:"Крепкая финансовая база — вы видите свои цифры. Теперь задача не «навести порядок», а расти агрессивнее и не потерять контроль на масштабе.",
+      kz:"Берік қаржылық негіз — өз сандарыңызды көресіз. Енді мақсат «тәртіп орнату» емес, агрессивті өсіп, ауқымда бақылауды жоғалтпау.",
+      en:"A solid financial base — you see your numbers. Now the task isn't 'getting organized' but growing more aggressively without losing control at scale."}}
 ];
 
-let answers = {};      // qIndex -> score
-let ctxAns = {};       // context id -> label
-let order = [];        // sequence of screens: 'c0','c1','q0'..'q9'
-let pos = 0;
+const waMsg = {
+  ru:(s,t,w,sp,tu)=>`Прошёл Финансовый пульс ALTO: ${s}/100 («${t}»). Слабые зоны: ${w}. Сфера: ${sp}, оборот ${tu}. Хочу бесплатный разбор.`,
+  kz:(s,t,w,sp,tu)=>`ALTO Қаржылық тексеруден өттім: ${s}/100 («${t}»). Әлсіз аймақтар: ${w}. Сала: ${sp}, айналым ${tu}. Тегін талдау алғым келеді.`,
+  en:(s,t,w,sp,tu)=>`Took the ALTO Financial Pulse: ${s}/100 ("${t}"). Weak areas: ${w}. Industry: ${sp}, turnover ${tu}. I'd like a free breakdown.`
+};
 
-function buildOrder(){
-  order = ["c0","c1"];
-  for(let i=0;i<questions.length;i++) order.push("q"+i);
-}
-buildOrder();
-
-const totalSteps = order.length;
+let answers={}, ctxAns={}, order=[], pos=0, finished=false, lastRes=null;
 const $ = id => document.getElementById(id);
+order=["c0","c1"]; for(let i=0;i<questions.length;i++) order.push("q"+i);
+const totalSteps=order.length;
 
-function show(screen){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  $(screen).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('#lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+  document.documentElement.lang=l;
+  renderIntro();
+  if($('question').classList.contains('active')) render();
+  if($('result').classList.contains('active') && lastRes) renderResult(lastRes);
 }
 
-function start(){ pos=0; render(); }
+function renderIntro(){
+  const t=T[lang];
+  $('backSite').textContent=t.backSite;
+  $('iLabel').textContent=t.iLabel;
+  $('iH1').innerHTML=t.iH1;
+  $('iLead').textContent=t.iLead;
+  $('iStart').textContent=t.iStart;
+  $('iTrust').innerHTML=`<svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>${t.iTrust}`;
+  const icons=['<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>',
+    '<path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6z"/>',
+    '<line x1="4" y1="20" x2="4" y2="13"/><line x1="12" y1="20" x2="12" y2="9"/><line x1="20" y1="20" x2="20" y2="5"/>'];
+  $('iChips').innerHTML=t.chips.map((c,i)=>`<span class="chip"><svg viewBox="0 0 24 24">${icons[i]}</svg>${c}</span>`).join('');
+}
+
+function show(s){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(s).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function start(){pos=0;render();}
 
 function render(){
-  const key = order[pos];
+  const key=order[pos], t=T[lang];
   $('progress').classList.add('show');
-  $('progressBar').style.width = ((pos)/(totalSteps))*100 + "%";
-  $('stepLabel').textContent = "Шаг " + (pos+1) + " из " + totalSteps;
-  $('backBtn').style.visibility = pos===0 ? "hidden" : "visible";
-
+  $('progressBar').style.width=((pos)/totalSteps)*100+"%";
+  $('stepLabel').textContent=t.step(pos+1,totalSteps);
+  $('backBtn').textContent=t.back;
+  $('backBtn').style.visibility=pos===0?"hidden":"visible";
   if(key[0]==='c'){
-    const c = context[+key.slice(1)];
-    $('qNum').textContent = c.num;
-    $('qText').textContent = c.text;
-    $('options').innerHTML = c.options.map((o,i)=>
-      `<button class="opt ${ctxAns[c.id]===o?'sel':''}" onclick="pickCtx('${c.id}','${o.replace(/'/g,"\\'")}')"><span class="dot"></span><span>${o}</span></button>`).join('');
-  } else {
-    const qi = +key.slice(1);
-    const q = questions[qi];
-    $('qNum').textContent = dims[q.dim];
-    $('qText').textContent = q.text;
-    $('options').innerHTML = q.options.map((o,i)=>
-      `<button class="opt ${answers[qi]===o[1]?'sel':''}" onclick="pickQ(${qi},${o[1]})"><span class="dot"></span><span>${o[0]}</span></button>`).join('');
+    const c=context[+key.slice(1)];
+    $('qNum').textContent=c.num[lang];
+    $('qText').textContent=c.text[lang];
+    $('options').innerHTML=c.options.map((o,i)=>
+      `<button class="opt ${ctxAns[c.id]===i?'sel':''}" onclick="pickCtx('${c.id}',${i})"><span class="dot"></span><span>${o[lang]}</span></button>`).join('');
+  }else{
+    const qi=+key.slice(1), q=questions[qi];
+    $('qNum').textContent=dims[lang][q.dim];
+    $('qText').textContent=q.t[lang];
+    $('options').innerHTML=q.o.map((o)=>
+      `<button class="opt ${answers[qi]===o[1]?'sel':''}" onclick="pickQ(${qi},${o[1]})"><span class="dot"></span><span>${o[0][lang]}</span></button>`).join('');
   }
   show('question');
 }
 
-function pickCtx(id,val){ ctxAns[id]=val; advance(); }
-function pickQ(qi,score){ answers[qi]=score; advance(); }
-
-function advance(){
-  setTimeout(()=>{
-    if(pos < order.length-1){ pos++; render(); }
-    else finish();
-  }, 220);
-}
-function prev(){ if(pos>0){ pos--; render(); } }
+function pickCtx(id,i){ctxAns[id]=i;advance();}
+function pickQ(qi,score){answers[qi]=score;advance();}
+function advance(){setTimeout(()=>{if(pos<order.length-1){pos++;render();}else finish();},220);}
+function prev(){if(pos>0){pos--;render();}}
 
 function finish(){
-  // средняя по направлениям
-  const dimScores = dims.map((_,d)=>{
-    const qs = questions.map((q,i)=>({q,i})).filter(x=>x.q.dim===d);
-    const sum = qs.reduce((a,x)=>a+(answers[x.i]??0),0);
-    return Math.round(sum/qs.length);
+  const dimScores=dims.ru.map((_,d)=>{
+    const qs=questions.map((q,i)=>({q,i})).filter(x=>x.q.dim===d);
+    return Math.round(qs.reduce((a,x)=>a+(answers[x.i]??0),0)/qs.length);
   });
-  const overall = Math.round(dimScores.reduce((a,b)=>a+b,0)/dims.length);
+  const overall=Math.round(dimScores.reduce((a,b)=>a+b,0)/dimScores.length);
+  const tIdx=tiers.findIndex(t=>overall>=t.min&&overall<=t.max);
+  const weakest=dims.ru.map((_,d)=>({d,v:dimScores[d]})).sort((a,b)=>a.v-b.v).slice(0,3);
+  lastRes={dimScores,overall,tIdx,weakest};
+  finished=true;
+  renderResult(lastRes);
+}
 
-  const tier = tiers.find(t=>overall>=t.min && overall<=t.max);
-  $('tier').textContent = "«"+tier.name+"»";
-  $('diag').textContent = tier.diag;
+function colorFor(v){return v<40?'var(--red)':(v<71?'var(--amber)':'var(--green)');}
 
-  // анимация числа
-  let cur=0; const step=Math.max(1,Math.round(overall/30));
-  const tick=setInterval(()=>{cur+=step; if(cur>=overall){cur=overall;clearInterval(tick);} $('scoreNum').textContent=cur;},28);
-  $('scoreNum').style.color = colorFor(overall);
+function renderResult(r){
+  const t=T[lang], tier=tiers[r.tIdx];
+  $('rLabel').textContent=t.rLabel;
+  $('tier').textContent="«"+tier.name[lang]+"»";
+  $('diag').textContent=tier.diag[lang];
+  $('rRecsH').textContent=t.rRecsH;
+  $('rCtaL').textContent=t.ctaL; $('rCtaH').textContent=t.ctaH; $('rCtaS').textContent=t.ctaS;
+  $('waBtn').textContent=t.wa; $('rRestart').textContent=t.restart; $('backSite').textContent=t.backSite;
 
-  // бары
-  $('bars').innerHTML = dims.map((nm,d)=>{
-    const v=dimScores[d];
-    return `<div class="bar-row"><div class="bar-head"><span class="nm">${nm}</span><span class="vl">${v}/100</span></div>
-      <div class="bar-track"><div class="bar-fill" style="background:${colorFor(v)}" data-w="${v}"></div></div></div>`;
+  let cur=0;const step=Math.max(1,Math.round(r.overall/30));
+  const tick=setInterval(()=>{cur+=step;if(cur>=r.overall){cur=r.overall;clearInterval(tick);}$('scoreNum').textContent=cur;},28);
+  $('scoreNum').style.color=colorFor(r.overall);
+
+  $('bars').innerHTML=dims[lang].map((nm,d)=>{
+    const v=r.dimScores[d];
+    return `<div class="bar-row"><div class="bar-head"><span class="nm">${nm}</span><span class="vl">${v}/100</span></div><div class="bar-track"><div class="bar-fill" style="background:${colorFor(v)}" data-w="${v}"></div></div></div>`;
   }).join('');
   setTimeout(()=>document.querySelectorAll('.bar-fill').forEach(b=>b.style.width=b.dataset.w+"%"),120);
 
-  // 3 рекомендации — по 3 самым слабым направлениям
-  const weakest = dims.map((_,d)=>({d,v:dimScores[d]})).sort((a,b)=>a.v-b.v).slice(0,3);
-  $('recList').innerHTML = weakest.map((w,i)=>
-    `<div class="rec"><div class="rec-n">${i+1}</div><div class="rec-t">${recMap[w.d]}</div></div>`).join('');
+  $('recList').innerHTML=r.weakest.map((w,i)=>
+    `<div class="rec"><div class="rec-n">${i+1}</div><div class="rec-t">${recMap[w.d][lang]}</div></div>`).join('');
 
-  // WhatsApp с прошитым результатом
-  const weakNames = weakest.map(w=>dims[w.d]).join(", ");
-  const msg = `Прошёл Финансовый пульс ALTO: ${overall}/100 («${tier.name}»). `+
-    `Слабые зоны: ${weakNames}. `+
-    `Сфера: ${ctxAns.sphere||'—'}, оборот ${ctxAns.turnover||'—'}. `+
-    `Хочу бесплатный разбор.`;
-  $('waBtn').href = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+  const weakNames=r.weakest.map(w=>dims[lang][w.d]).join(", ");
+  const sp=ctxAns.sphere!=null?context[0].options[ctxAns.sphere][lang]:"—";
+  const tu=ctxAns.turnover!=null?context[1].options[ctxAns.turnover][lang]:"—";
+  $('waBtn').href=`https://wa.me/${WA}?text=${encodeURIComponent(waMsg[lang](r.overall,tier.name[lang],weakNames,sp,tu))}`;
 
   $('progressBar').style.width="100%";
-  $('stepLabel').textContent="Готово";
+  $('stepLabel').textContent=t.done;
   show('result');
 }
 
-function colorFor(v){ return v<40?'var(--red)':(v<71?'var(--amber)':'var(--green)'); }
+function restart(){answers={};ctxAns={};pos=0;finished=false;lastRes=null;$('progress').classList.remove('show');renderIntro();show('intro');window.scrollTo({top:0});}
 
-function restart(){ answers={}; ctxAns={}; pos=0; $('progress').classList.remove('show'); show('intro'); window.scrollTo({top:0}); }
+renderIntro();
 </script>
 </body>
 </html>
