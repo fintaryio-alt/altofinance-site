@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALTO Finance — Финансовый директор на аутсорсе</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#FDFCF9;--cream:#F5F0E8;--cream2:#EDE8DE;--cream3:#E8E2D5;
+  --ink:#1C1917;--ink2:#44403C;--ink3:#78716C;--ink4:#A8A29E;
+  --red:#C0392B;--red2:#991B1B;--red-soft:#FAF0EE;
+  --border:#D6CFC4;--bdark:rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;overflow-x:hidden}
+
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:12px 48px;background:rgba(253,252,249,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);letter-spacing:2px;text-decoration:none}
+.logo span{color:var(--red)}
+.nav-links{display:flex;gap:28px}
+.nav-link{font-size:12px;color:var(--ink3);text-decoration:none;letter-spacing:.04em;transition:color .2s}
+.nav-link:hover{color:var(--ink)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.lang-wrap{display:flex;gap:1px;background:var(--cream2);border-radius:5px;padding:2px}
+.lang-btn{padding:5px 10px;border:none;background:transparent;color:var(--ink3);font-size:11px;font-family:inherit;cursor:pointer;border-radius:3px;transition:all .2s}
+.lang-btn.active{background:var(--red);color:#fff}
+.btn-wa-top{display:flex;align-items:center;gap:6px;background:#25D366;color:#fff;border:none;border-radius:6px;padding:8px 14px;font-size:12px;font-weight:500;font-family:inherit;cursor:pointer;text-decoration:none}
+.btn-wa-top svg{width:14px;height:14px;fill:#fff}
+.btn-ig-top{display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--border);border-radius:6px;padding:8px;text-decoration:none}
+.btn-ig-top svg{width:15px;height:15px;stroke:var(--ink2);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* HERO SPLIT */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:64px}
+.hero-left{background:var(--white);padding:80px 6% 80px 10%;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--border)}
+.hero-right{background:var(--ink);padding:80px 10% 80px 6%;display:flex;flex-direction:column;justify-content:center}
+.hero-tag{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--red);margin-bottom:16px;font-weight:500}
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(34px,4.2vw,58px);font-weight:700;line-height:1.05;letter-spacing:-1px;color:var(--ink);margin-bottom:20px}
+.hero-h1 em{font-style:italic;color:var(--red);display:block}
+.hero-lead{font-size:15px;color:var(--ink3);line-height:1.9;margin-bottom:32px;max-width:400px}
+.hero-lead strong{color:var(--ink);font-weight:500}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px}
+.btn-dark{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--white);border:none;padding:14px 28px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .2s}
+.btn-dark:hover{background:var(--red)}
+.hero-trust{display:flex;gap:20px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink3)}
+.trust-item svg{width:12px;height:12px;stroke:var(--red);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.hero-right-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(245,240,232,0.3);margin-bottom:24px;font-weight:500}
+.pain-list{display:flex;flex-direction:column}
+.pain-item{padding:16px 0;border-bottom:1px solid var(--bdark);display:flex;gap:14px;align-items:flex-start}
+.pain-item:last-child{border-bottom:none}
+.pain-num{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--red);flex-shrink:0;width:26px;line-height:1;margin-top:2px}
+.pain-q{font-size:14px;font-weight:500;color:var(--white);margin-bottom:3px;line-height:1.3}
+.pain-a{font-size:12px;color:rgba(245,240,232,0.45);line-height:1.6}
+.pain-a strong{color:var(--red);font-weight:500}
+
+/* STATS */
+.stats-bar{background:var(--red);display:grid;grid-template-columns:repeat(4,1fr)}
+.stat-cell{padding:20px 22px;border-right:1px solid rgba(255,255,255,0.15);text-align:center}
+.stat-cell:last-child{border-right:none}
+.stat-n{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#fff;line-height:1;margin-bottom:4px}
+.stat-l{font-size:10px;color:rgba(255,255,255,0.6);letter-spacing:.04em;line-height:1.4}
+
+section{padding:84px 10%}
+.stag{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--red);margin-bottom:12px;font-weight:500}
+.stitle{font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,42px);font-weight:400;line-height:1.1;margin-bottom:14px;color:var(--ink)}
+.stitle em{font-style:italic;color:var(--red)}
+.sdesc{font-size:14px;color:var(--ink3);line-height:1.8;max-width:520px;margin-bottom:36px}
+
+/* OFFER */
+.offer-sec{background:var(--cream)}
+.offer-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.offer-card{background:var(--white);border:1px solid var(--border);overflow:hidden}
+.offer-card.ft{border-top:3px solid var(--red)}
+.o-tag{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--red);font-weight:500;display:block;padding:20px 24px 0}
+.o-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);padding:8px 24px 10px}
+.o-desc{font-size:13px;color:var(--ink3);padding:0 24px 14px;line-height:1.7;border-bottom:1px solid rgba(28,25,23,0.06)}
+.o-items{padding:14px 24px;display:flex;flex-direction:column;gap:8px}
+.o-item{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--ink2);line-height:1.5}
+.o-item svg{width:12px;height:12px;stroke:var(--red);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;margin-top:3px}
+.o-item strong{color:var(--ink);font-weight:500}
+.o-price{padding:14px 24px 22px;border-top:1px solid rgba(28,25,23,0.06);display:flex;align-items:baseline;gap:5px}
+.o-from{font-size:10px;color:var(--ink4);letter-spacing:1px;text-transform:uppercase}
+.o-amount{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.o-per{font-size:12px;color:var(--ink4)}
+.price-note{background:var(--white);border:1px solid var(--border);padding:16px 22px;display:flex;gap:14px;align-items:flex-start}
+.pn-ico svg{width:17px;height:17px;stroke:var(--red);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;margin-top:2px}
+.pn-text{font-size:12px;color:var(--ink3);line-height:1.7}
+.pn-text strong{color:var(--ink);font-weight:500}
+
+/* INDUSTRIES */
+.ind-sec{background:var(--white)}
+.ind-header{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:36px}
+.ind-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border)}
+.ind-card{background:var(--white);padding:26px 24px;transition:background .2s}
+.ind-card:hover{background:var(--cream)}
+.ind-ico{width:40px;height:40px;border-radius:50%;background:var(--red-soft);border:1px solid rgba(192,57,43,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.ind-ico svg{width:18px;height:18px;stroke:var(--red);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ind-name{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:10px}
+.ind-pains{display:flex;flex-direction:column;gap:5px}
+.ind-pain{font-size:12px;color:var(--ink3);display:flex;gap:7px;line-height:1.5}
+.ind-pain::before{content:'—';color:var(--red);flex-shrink:0}
+
+/* REPORTS */
+.rep-sec{background:var(--cream2)}
+.tab-bar{display:flex;border-bottom:1px solid var(--border);overflow-x:auto}
+.rtab{padding:11px 18px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.rtab.active{color:var(--red);border-bottom-color:var(--red)}
+.rtable{display:none}
+.rtable.active{display:block}
+.tbl-wrap{border:1px solid var(--border);border-top:none;background:var(--white)}
+table.fin{width:100%;border-collapse:collapse;font-size:12px}
+table.fin thead tr{background:var(--cream)}
+table.fin th{padding:9px 13px;text-align:left;font-size:10px;color:var(--ink3);border-bottom:1px solid var(--border);font-weight:500;letter-spacing:.3px}
+table.fin td{padding:8px 13px;border-bottom:1px solid rgba(28,25,23,0.05);color:var(--ink2)}
+table.fin tr:last-child td{border-bottom:none}
+table.fin tr.shdr td{background:var(--red-soft);color:var(--red2);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:6px 13px;font-weight:500}
+table.fin tr.total td{font-weight:500;background:var(--cream);color:var(--ink)}
+table.fin td.num{text-align:right;font-variant-numeric:tabular-nums}
+table.fin td.neg{color:#C0392B;text-align:right}
+table.fin td.pos{color:#16613A;text-align:right;font-weight:500}
+table.fin td.up{color:#16613A;text-align:right;font-weight:500}
+table.fin td.dn{color:#C0392B;text-align:right;font-weight:500}
+table.fin td.neu{color:var(--ink3);text-align:right}
+
+/* HOW */
+.how-sec{background:var(--white)}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border)}
+.how-step{padding:26px 22px;border-right:1px solid var(--border)}
+.how-step:last-child{border-right:none}
+.step-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--cream3);line-height:1;margin-bottom:10px}
+.step-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:5px}
+.step-desc{font-size:12px;color:var(--ink3);line-height:1.7}
+
+/* REMOTE */
+.remote-sec{background:var(--ink)}
+.remote-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.remote-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,36px);font-weight:400;color:var(--white);line-height:1.2;margin-bottom:20px}
+.remote-title em{font-style:italic;color:var(--red)}
+.remote-text{font-size:14px;color:rgba(245,240,232,0.5);line-height:1.9;margin-bottom:20px}
+.remote-text strong{color:var(--white);font-weight:500}
+.remote-items{border:1px solid rgba(255,255,255,0.07)}
+.remote-item{padding:18px 22px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:14px;align-items:flex-start}
+.remote-item:last-child{border-bottom:none}
+.ri-ico{width:36px;height:36px;border-radius:50%;background:var(--red-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ri-ico svg{width:16px;height:16px;stroke:var(--red);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ri-title{font-size:13px;font-weight:500;color:var(--white);margin-bottom:3px}
+.ri-desc{font-size:11px;color:rgba(245,240,232,0.4);line-height:1.6}
+
+/* WHY */
+.why-sec{background:var(--cream)}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.why-text{font-size:14px;color:var(--ink3);line-height:1.9;margin-bottom:22px}
+.why-text strong{color:var(--ink);font-weight:500}
+.why-certs{display:flex;gap:8px;flex-wrap:wrap}
+.why-cert{border:1px solid var(--border);padding:10px 14px;background:var(--white)}
+.c-lbl{font-size:9px;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px}
+.c-val{font-size:12px;font-weight:500;color:var(--ink2)}
+.why-props{border:1px solid var(--border);overflow:hidden;background:var(--white)}
+.why-prop{padding:18px 22px;border-bottom:1px solid rgba(28,25,23,0.06)}
+.why-prop:last-child{border-bottom:none}
+.wp-tag{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:4px;font-weight:500}
+.wp-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px}
+.wp-desc{font-size:11px;color:var(--ink3);line-height:1.6}
+
+/* CTA */
+.cta-sec{padding:0}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr}
+.cta-left{background:var(--white);padding:60px 48px;border-right:1px solid var(--border);border-top:1px solid var(--border)}
+.cta-right{background:var(--ink);padding:60px 48px}
+.cta-eyebrow{font-size:10px;color:var(--red);letter-spacing:5px;text-transform:uppercase;margin-bottom:14px;font-weight:500}
+.cta-title{font-family:'Playfair Display',serif;font-size:clamp(26px,3vw,42px);font-weight:400;line-height:1.05;color:var(--ink)}
+.cta-title em{font-style:italic;color:var(--red)}
+.cta-div{width:40px;height:1px;background:var(--red);margin:22px 0}
+.cta-contacts{display:flex;flex-direction:column;gap:14px;margin-bottom:24px}
+.cta-c{display:flex;align-items:center;gap:12px;text-decoration:none}
+.cta-c svg{width:17px;height:17px;stroke:var(--red);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.cta-c-lbl{font-size:10px;color:var(--ink4);display:block;letter-spacing:.04em}
+.cta-c-val{font-size:14px;font-weight:500;color:var(--ink);display:block}
+.cta-nda{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--ink4)}
+.cta-nda svg{width:12px;height:12px;stroke:var(--red2);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.cta-r-tag{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--red);margin-bottom:12px;display:block;font-weight:500}
+.cta-r-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.2}
+.cta-r-desc{font-size:12px;color:rgba(245,240,232,0.45);line-height:1.8;margin-bottom:20px}
+.cta-r-items{display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
+.cta-r-item{display:flex;gap:9px;align-items:flex-start;font-size:12px;color:rgba(245,240,232,0.7)}
+.cta-r-item svg{width:12px;height:12px;stroke:var(--red);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;margin-top:2px}
+.btn-wa-big{display:flex;align-items:center;justify-content:center;gap:9px;background:#25D366;color:#fff;border:none;padding:14px 22px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;text-decoration:none;width:100%;transition:opacity .2s;margin-bottom:8px}
+.btn-wa-big:hover{opacity:.85}
+.btn-wa-big svg{width:16px;height:16px;fill:#fff}
+.btn-ig-big{display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;color:rgba(245,240,232,0.5);border:1px solid rgba(255,255,255,0.1);padding:11px 22px;font-size:12px;font-family:inherit;cursor:pointer;text-decoration:none;width:100%;transition:all .2s}
+.btn-ig-big:hover{border-color:rgba(255,255,255,0.3);color:rgba(245,240,232,0.8)}
+.btn-ig-big svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+footer{background:var(--ink);border-top:1px solid rgba(255,255,255,0.05);padding:22px 10%;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.f-logo{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:rgba(245,240,232,0.3);letter-spacing:2px}
+.f-logo span{color:var(--red)}
+.f-mission{font-size:11px;color:rgba(245,240,232,0.2);font-style:italic}
+.f-copy{font-size:11px;color:rgba(245,240,232,0.2)}
+.nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:990}
+.ndot{width:4px;height:4px;border-radius:50%;background:rgba(28,25,23,0.2);cursor:pointer;transition:all .3s}
+.ndot.active{background:var(--red);height:14px;border-radius:2px}
+.fi{opacity:0;transform:translateY(12px);transition:opacity .55s ease,transform .55s ease}
+.fi.v{opacity:1;transform:none}
+
+@media(max-width:960px){
+  .topbar{padding:10px 20px}.nav-links{display:none}
+  .hero{grid-template-columns:1fr}.hero-right{display:none}
+  section{padding:60px 6%}
+  .offer-grid,.ind-grid,.remote-grid,.why-grid,.cta-grid,.ind-header{grid-template-columns:1fr}
+  .hero-right{display:block!important;background:var(--cream);padding:40px 6%}
+  .stats-bar,.how-grid{grid-template-columns:1fr 1fr}
+  .cta-left,.cta-right{padding:36px 24px}
+  .nav-dots{display:none}
+  footer{flex-direction:column;text-align:center;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="#s0" class="logo">A<span>L</span>TO <span style="font-size:12px;opacity:.4;font-weight:300;letter-spacing:4px;font-family:'Inter',sans-serif">FINANCE</span></a>
+  <nav class="nav-links">
+    <a href="#offer" class="nav-link t" data-ru="Услуги" data-kz="Қызметтер" data-en="Services">Услуги</a>
+    <a href="#industries" class="nav-link t" data-ru="Отрасли" data-kz="Салалар" data-en="Industries">Отрасли</a>
+    <a href="#reports" class="nav-link t" data-ru="Отчёты" data-kz="Есептер" data-en="Reports">Отчёты</a>
+    <a href="#cta" class="nav-link t" data-ru="Контакты" data-kz="Байланыс" data-en="Contact">Контакты</a>
+  </nav>
+  <div class="topbar-right">
+    <div class="lang-wrap">
+      <button class="lang-btn active" onclick="setLang('ru')">RU</button>
+      <button class="lang-btn" onclick="setLang('kz')">KZ</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <a href="https://instagram.com/altofinance.kz" target="_blank" class="btn-ig-top">
+      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    </a>
+    <a href="https://wa.me/77070385020?text=Хочу записаться на бесплатный разбор финансов" target="_blank" class="btn-wa-top">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.532 5.845L0 24l6.335-1.51A11.956 11.956 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.003-1.368l-.36-.214-3.727.977.994-3.638-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</div>
+
+<div class="nav-dots" id="navDots"></div>
+
+<!-- HERO -->
+<div class="hero" id="s0">
+  <div class="hero-left">
+    <div class="hero-tag t" data-ru="Аутсорс финансового директора · Алматы" data-kz="Қаржылық директор аутсорсы · Алматы" data-en="Outsource CFO · Almaty, Kazakhstan">Аутсорс финансового директора · Алматы</div>
+    <div class="hero-h1 t" data-ru="Ваш бизнес<br>наконец увидит<br><em>свои деньги</em>" data-kz="Бизнесіңіздің<br>қаржысы енді<br><em>айқын болады</em>" data-en="Your business<br>will finally<br><em>see its money</em>">Ваш бизнес<br>наконец увидит<br><em>свои деньги</em></div>
+    <p class="hero-lead t" data-ru="Строим финансовую систему с нуля. Собственник видит где деньги, куда уходят и что делать завтра. <strong>Прямо. Без лишних слов.</strong>" data-kz="Қаржы жүйесін нөлден бірге тұрғызамыз. Меншік иесі ақша қайда, қайда кетіп жатқанын және ертең не істеу керектігін біледі. <strong>Тура. Артық сөзсіз.</strong>" data-en="We build financial systems from scratch. The owner knows where the money is and what to do next. <strong>Directly. No fluff.</strong>">Строим финансовую систему с нуля. Собственник видит где деньги, куда уходят и что делать завтра. <strong>Прямо. Без лишних слов.</strong></p>
+    <div class="hero-btns fi">
+      <a href="https://wa.me/77070385020?text=Хочу записаться на бесплатный разбор финансов ALTO Finance" target="_blank" class="btn-dark t" data-ru="Разбор финансов — бесплатно →" data-kz="Тегін қаржылық талдауға жазылу →" data-en="Free financial breakdown →">Разбор финансов — бесплатно →</a>
+      <a href="#reports" style="display:inline-flex;align-items:center;gap:7px;background:var(--red-soft);color:var(--red);border:1px solid rgba(192,57,43,0.25);padding:14px 22px;font-size:13px;font-family:inherit;text-decoration:none;font-weight:400;transition:all .2s" class="t" data-ru="Финансовый пульс →" data-kz="Қаржылық тексеру →" data-en="Financial pulse →">Финансовый пульс →</a>
+    </div>
+    <div class="hero-trust fi">
+      <div class="trust-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="45 минут · без обязательств" data-kz="45 минут · міндеттемесіз" data-en="45 min · no obligations">45 минут · без обязательств</span></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="NDA с первого дня" data-kz="Бірінші күннен NDA" data-en="NDA from day one">NDA с первого дня</span></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Работаем удалённо — любой город" data-kz="Қашықтан жұмыс — қай қалада болсаңыз да" data-en="Remote — any city">Работаем удалённо — любой город</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-label t" data-ru="Узнаёте себя?" data-kz="Бұл сіз туралы ма?" data-en="Does this sound like you?">Узнаёте себя?</div>
+    <div class="pain-list">
+      <div class="pain-item"><div class="pain-num">01</div><div><div class="pain-q t" data-ru="«Деньги есть — непонятно где»" data-kz="«Ақша айналымда — бірақ қайда кететінін білмеймін»" data-en="«Money is there — but no one knows where»">«Деньги есть — непонятно где»</div><div class="pain-a t" data-ru="Обороты хорошие, счёт пустой. <strong>Покажем куда уходят деньги.</strong>" data-kz="Айналым жақсы, бірақ шот бос. <strong>Ақша қайда кететінін көрсетеміз.</strong>" data-en="Revenue good, account empty. <strong>We'll show where money goes.</strong>">Обороты хорошие, счёт пустой. <strong>Покажем куда уходят деньги.</strong></div></div></div>
+      <div class="pain-item"><div class="pain-num">02</div><div><div class="pain-q t" data-ru="«Не знаю реальную прибыль»" data-kz="«Нақты пайдам қанша екенін білмеймін»" data-en="«I don't know my real profit»">«Не знаю реальную прибыль»</div><div class="pain-a t" data-ru="Путаете выручку и прибыль. <strong>ОПиУ расставит всё по местам.</strong>" data-kz="Кіріс пен таза пайданы шатастыру оңай. <strong>ОПиУ бәрін орнына қояды.</strong>" data-en="Confusing revenue with profit. <strong>P&L will clarify everything.</strong>">Путаете выручку и прибыль. <strong>ОПиУ расставит всё по местам.</strong></div></div></div>
+      <div class="pain-item"><div class="pain-num">03</div><div><div class="pain-q t" data-ru="«Кассовые разрывы — каждый месяц»" data-kz="«Ай сайын ақша жетпей қалады»" data-en="«Cash gaps every month»">«Кассовые разрывы — каждый месяц»</div><div class="pain-a t" data-ru="Платёжный календарь на 6 недель вперёд. <strong>Разрыв виден до того как случился.</strong>" data-kz="6 аптаға алдын ала төлем күнтізбесі жасаймыз. <strong>Ақша жетпестен бұрын көреміз.</strong>" data-en="Payment calendar 6 weeks ahead. <strong>Gap visible before it happens.</strong>">Платёжный календарь на 6 недель вперёд. <strong>Разрыв виден до того как случился.</strong></div></div></div>
+      <div class="pain-item"><div class="pain-num">04</div><div><div class="pain-q t" data-ru="«CFO в штат — дорого и рано»" data-kz="«Штатқа қаржы директорын алу — қымбат және ерте»" data-en="«Full-time CFO — too costly, too early»">«CFO в штат — дорого и рано»</div><div class="pain-a t" data-ru="Работаем как штатный директор — без оклада. <strong>Платите только за результат.</strong>" data-kz="Штаттағы директор сияқты жұмыс жасаймыз — жалақысыз. <strong>Тек нәтижеге төлейсіз.</strong>" data-en="Like an in-house director — no salary. <strong>Pay for results only.</strong>">Работаем как штатный директор — без оклада. <strong>Платите только за результат.</strong></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-cell"><div class="stat-n">6+</div><div class="stat-l t" data-ru="отраслей<br>глубокой экспертизы" data-kz="салада<br>терең тәжірибе" data-en="industries<br>expertise">отраслей<br>глубокой экспертизы</div></div>
+  <div class="stat-cell"><div class="stat-n">45'</div><div class="stat-l t" data-ru="бесплатный<br>разбор финансов" data-kz="тегін<br>қаржылық талдау" data-en="free<br>breakdown">бесплатный<br>разбор финансов</div></div>
+  <div class="stat-cell"><div class="stat-n">∞</div><div class="stat-l t" data-ru="работаем<br>из любого города" data-kz="кез келген<br>қаладан жұмыс" data-en="work from<br>any city">работаем<br>из любого города</div></div>
+  <div class="stat-cell"><div class="stat-n">24/7</div><div class="stat-l t" data-ru="ИИ-команда<br>всегда на связи" data-kz="ЖИ-команда<br>тәулік бойы жұмыста" data-en="AI team<br>always on">ИИ-команда<br>всегда на связи</div></div>
+</div>
+
+<!-- OFFER -->
+<section class="offer-sec" id="offer">
+  <div class="stag t" data-ru="Услуги и цены" data-kz="Қызмет түрлері мен бағасы" data-en="Services & pricing">Услуги и цены</div>
+  <div class="stitle t" data-ru="Два формата —<br><em>один результат</em>" data-kz="Екі формат —<br><em>бір нәтиже</em>" data-en="Two formats —<br><em>one result</em>">Два формата —<br><em>один результат</em></div>
+  <div class="offer-grid fi">
+    <div class="offer-card ft">
+      <span class="o-tag t" data-ru="Постоянное сопровождение · Рекомендуем" data-kz="Тұрақты серіктестік · Ұсынамыз" data-en="Ongoing support · Recommended">Тұрақты қызмет · Ұсынамыз</span>
+      <div class="o-title t" data-ru="Аутсорс CFO" data-kz="Аутсорс CFO" data-en="Outsource CFO">Аутсорс CFO</div>
+      <div class="o-desc t" data-ru="В вашей команде без найма в штат. Ведём учёт, делаем отчёты, говорим прямо. Каждый месяц — разбор с собственником." data-kz="Штатқа алынбай-ақ командаңызда жұмыс жасаймыз. Есеп жүргіземіз, талдаймыз, тура айтамыз. Ай сайын меншік иесімен нәтижелерді бірге қарастырамыз." data-en="On your team without payroll. Monthly review with owner.">Штатта болмай, сіздің командаңызда жұмыс жасаймыз. Есеп жүргіземіз, есептер жасаймыз. Ай сайын меншік иесімен нәтижелерді талдаймыз.</div>
+      <div class="o-items">
+        <div class="o-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="<strong>ДДС</strong> — движение денег по неделям" data-kz="<strong>ДДС</strong> — ақша ағынын апта сайын қадағалаймыз" data-en="<strong>Cash Flow</strong> — weekly money movement"><strong>ДДС</strong> — движение денег по неделям</span></div>
+        <div class="o-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="<strong>ОПиУ</strong> — реальная прибыль, не выручка" data-kz="<strong>ОПиУ</strong> — нақты пайданы кіріспен шатастырмаңыз" data-en="<strong>P&L</strong> — real profit, not just revenue"><strong>ОПиУ</strong> — реальная прибыль, не выручка</span></div>
+        <div class="o-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="<strong>Платёжный календарь</strong> — разрыв виден заранее" data-kz="<strong>Төлем күнтізбесі</strong> — ақша жетпестен бұрын ескертеміз" data-en="<strong>Payment calendar</strong> — gaps visible in advance"><strong>Платёжный календарь</strong> — разрыв виден заранее</span></div>
+        <div class="o-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Налоговая оптимизация — законно" data-kz="Салықты заңды жолмен азайту мүмкіндігін табамыз" data-en="Tax optimization — legally">Налоговая оптимизация — законно</span></div>
+        <div class="o-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Контроль дебиторки и кассовых разрывов" data-kz="Дебиторлар мен кассалық алшақтықты бақылаймыз" data-en="Cash gap and receivables control">Контроль дебиторки и кассовых разрывов</span></div>
+        <div class="o-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Ежемесячный разбор показателей с собственником" data-kz="Ай сайын меншік иесімен нәтижелерді бірге талдаймыз" data-en="Monthly KPI review with owner">Ежемесячный разбор показателей с собственником</span></div>
+      </div>
+      <div class="o-price"><span class="o-from t" data-ru="от" data-kz="бастап" data-en="from">бастап</span><span class="o-amount">150 000 ₸</span><span class="o-per t" data-ru="/месяц" data-kz="/ай" data-en="/month">/ай</span></div>
+    </div>
+    <div class="offer-card">
+      <span class="o-tag t" data-ru="Разовый проект" data-kz="Бір реттік жоба" data-en="One-time project">Бір реттік жоба</span>
+      <div class="o-title t" data-ru="Постановка учёта под ключ" data-kz="Есеп жүйесі — толық дайын" data-en="Full accounting setup">Есеп жүйесі — толық дайын</div>
+      <div class="o-desc t" data-ru="Строим систему с нуля, обучаем команду, передаём — работаете самостоятельно." data-kz="Нөлден жүйе тұрғызамыз, оқытамыз, тапсырамыз." data-en="Build from scratch, train team, hand over.">Нөлден жүйе тұрғызамыз, оқытамыз, тапсырамыз.</div>
+      <div class="o-items">
+        <div class="o-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Аудит и диагностика текущего состояния" data-kz="Бизнесіңіздің қазіргі қаржылық жағдайын талдаймыз" data-en="Current state audit and diagnosis">Аудит и диагностика текущего состояния</span></div>
+        <div class="o-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Таблицы, регламенты, инструкции" data-kz="Кестелер, ережелер және нұсқаулықтар дайындаймыз" data-en="Spreadsheets, processes, instructions">Таблицы, регламенты, инструкции</span></div>
+        <div class="o-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Финансовая модель — MIN / BASE / MAX" data-kz="Үш сценарийлі қаржылық модель — MIN / BASE / MAX" data-en="Financial model — MIN / BASE / MAX">Финансовая модель — MIN / BASE / MAX</span></div>
+        <div class="o-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Точка безубыточности и прогноз роста" data-kz="Шығынсыздық нүктесі және өсу болжамы" data-en="Break-even point and growth forecast">Точка безубыточности и прогноз роста</span></div>
+        <div class="o-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Поддержка 30 дней после передачи" data-kz="Тапсырғаннан кейін 30 күн бойы қолдау көрсетеміз" data-en="30-day support after handover">Поддержка 30 дней после передачи</span></div>
+      </div>
+      <div class="o-price"><span class="o-from t" data-ru="от" data-kz="бастап" data-en="from">бастап</span><span class="o-amount">500 000 ₸</span></div>
+    </div>
+  </div>
+  <div class="price-note fi">
+    <div class="pn-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+    <div class="pn-text t" data-ru="<strong>Как формируется цена:</strong> зависит от оборота, количества юрлиц и объёма задач. До 10 млн ₸/мес — от 80 000 ₸. Несколько юрлиц — от 200 000 ₸. Постановка под ключ — от 500 000 до 1 000 000 ₸ в зависимости от ТЗ. Точную цену называем на бесплатном разборе." data-kz="<strong>Баға қалай есептеледі:</strong> айналымға, заңды тұлғалар санына және тапсырмалар көлеміне байланысты. Нақты бағаны тегін талдауда айтамыз." data-en="<strong>How pricing works:</strong> depends on turnover, entities, and scope. Up to 10M ₸/mo — from 80K ₸. Full setup — 500K to 1M ₸. Exact price at free breakdown."><strong>Как формируется цена:</strong> зависит от оборота, количества юрлиц и объёма задач. До 10 млн ₸/мес — от 80 000 ₸. Несколько юрлиц — от 200 000 ₸. Постановка под ключ — от 500 000 до 1 000 000 ₸ в зависимости от ТЗ. Точную цену называем на бесплатном разборе.</div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="ind-sec" id="industries">
+  <div class="ind-header fi">
+    <div>
+      <div class="stag t" data-ru="Отраслевой опыт" data-kz="Сала тәжірибесі" data-en="Industry expertise">Отраслевой опыт</div>
+      <div class="stitle t" data-ru="Знаем вашу<br>боль <em>изнутри</em>" data-kz="Саланы<br><em>іштей білеміз</em>" data-en="We know your<br>pain <em>from inside</em>">Знаем вашу<br>боль <em>изнутри</em></div>
+    </div>
+    <p class="sdesc t" data-ru="Говорим не общими словами — говорим про конкретные боли, метрики и риски вашей отрасли. Клиент сразу понимает: эти ребята знают дело." data-kz="Жалпы сөзбен айтпаймыз — сіздің бизнесіңіздің нақты мәселелері туралы сөйлесеміз. Клиент бірден сезеді: бұлар менің саламды біледі." data-en="We don't use general terms — we talk about your industry's specific pain points, metrics, and risks.">Говорим не общими словами — говорим про конкретные боли, метрики и риски вашей отрасли. Клиент сразу понимает: эти ребята знают дело.</p>
+  </div>
+  <div class="ind-grid fi">
+    <div class="ind-card">
+      <div class="ind-ico"><svg viewBox="0 0 24 24"><polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5"/></svg></div>
+      <div class="ind-name t" data-ru="Строительство и стройматериалы" data-kz="Құрылыс және құрылыс материалдары" data-en="Construction & building materials">Строительство и стройматериалы</div>
+      <div class="ind-pains">
+        <div class="ind-pain t" data-ru="Маржинальность по каждому объекту и этапу" data-kz="Әр объект бойынша маржинал есебі" data-en="Margin per project and stage">Маржинальность по каждому объекту и этапу</div>
+        <div class="ind-pain t" data-ru="Сметный учёт — план vs факт по материалам" data-kz="Смета есебі — жоспар мен нақты шығынды салыстырамыз" data-en="Cost accounting — plan vs actual">Сметный учёт — план vs факт по материалам</div>
+        <div class="ind-pain t" data-ru="Авансы по этапам — кассовые разрывы" data-kz="Кезеңдер бойынша аванс — кассалық алшақтықты болдырмаймыз" data-en="Stage advances — cash gaps">Авансы по этапам — кассовые разрывы</div>
+        <div class="ind-pain t" data-ru="Контроль субподрядчиков — переплата?" data-kz="Мердігерлерге артық төлеп жатырсыз ба?" data-en="Subcontractor control — overpayment?">Контроль субподрядчиков — переплата?</div>
+      </div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+      <div class="ind-name t" data-ru="Торговля · Каспи · Онлайн" data-kz="Сауда · Kaspi · Онлайн сату" data-en="Trade · Kaspi · Online">Торговля · Каспи · Онлайн</div>
+      <div class="ind-pains">
+        <div class="ind-pain t" data-ru="Онлайн-оценка — маржа после комиссий Каспи" data-kz="Kaspi комиссиясынан кейінгі нақты маржаны есептейміз" data-en="Real margin after Kaspi fees">Онлайн-оценка — маржа после комиссий Каспи</div>
+        <div class="ind-pain t" data-ru="Остатки — мёртвый товар замораживает деньги" data-kz="Сатылмаған тауар ақшаны тоқтатады — шешімін табамыз" data-en="Dead stock freezing cash">Остатки — мёртвый товар замораживает деньги</div>
+        <div class="ind-pain t" data-ru="Возвраты — сколько реально теряете?" data-kz="Қайтарулар сіздің пайдаңызға қалай әсер етеді?" data-en="Returns — how much are you losing?">Возвраты — сколько реально теряете?</div>
+        <div class="ind-pain t" data-ru="КСП — ключевые показатели продавца" data-kz="КСП — сатушының негізгі өнімділік көрсеткіштері" data-en="KSP — key seller metrics">КСП — ключевые показатели продавца</div>
+      </div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-ico"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+      <div class="ind-name t" data-ru="Медицина — реабилитация · диагностика" data-kz="Медицина — оңалту және диагностика" data-en="Medicine — rehabilitation · diagnostics">Медицина — реабилитация · диагностика</div>
+      <div class="ind-pains">
+        <div class="ind-pain t" data-ru="Загрузка кабинетов — потери от простоя" data-kz="Бос кабинет — жоғалған табыс. Жүктемені бақылаймыз" data-en="Room utilization — downtime losses">Загрузка кабинетов — потери от простоя</div>
+        <div class="ind-pain t" data-ru="KPI по врачам — кто приносит прибыль?" data-kz="Қай дәрігер нақты пайда әкеледі? KPI талдауы" data-en="Doctor KPIs — who generates profit?">KPI по врачам — кто приносит прибыль?</div>
+        <div class="ind-pain t" data-ru="Расходники — факт vs норма на пациента" data-kz="Шығыс материалдары — норма мен нақтыны салыстырамыз" data-en="Consumables — actual vs norm per patient">Расходники — факт vs норма на пациента</div>
+        <div class="ind-pain t" data-ru="Колл-центр — конверсия звонок → явка" data-kz="Қоңырау орталығы — қоңыраудан қабылдауға дейінгі конверсия" data-en="Call center — call to visit conversion">Колл-центр — конверсия звонок → явка</div>
+      </div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+      <div class="ind-name t" data-ru="Образовательные учреждения" data-kz="Білім беру орындары" data-en="Educational institutions">Образовательные учреждения</div>
+      <div class="ind-pains">
+        <div class="ind-pain t" data-ru="Абонплата — кто не заплатил и когда?" data-kz="Кім төлемеді және қашан мерзімі өтті? Бақылаймыз" data-en="Subscriptions — who hasn't paid?">Абонплата — кто не заплатил и когда?</div>
+        <div class="ind-pain t" data-ru="Сезонность — как закрыть летние провалы" data-kz="Жаздағы кіріс төмендеуін қалай жабуға болады?" data-en="Seasonality — cover summer drops">Сезонность — как закрыть летние провалы</div>
+        <div class="ind-pain t" data-ru="ФОТ педагогов — часовая vs ставка" data-kz="Педагогтардың жалақысы — сағаттық па, ставкалық па?" data-en="Teacher payroll — hourly vs fixed">ФОТ педагогов — часовая vs ставка</div>
+        <div class="ind-pain t" data-ru="Прогноз поступлений — ДДС по ученикам" data-kz="Оқушылар бойынша кіріс болжамы және ДДС есебі" data-en="Revenue forecast — per student">Прогноз поступлений — ДДС по ученикам</div>
+      </div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-ico"><svg viewBox="0 0 24 24"><path d="M3 2.69a.5.5 0 0 1 .765-.424L21 12 3.765 21.734A.5.5 0 0 1 3 21.31V2.69z"/></svg></div>
+      <div class="ind-name t" data-ru="Общепит · рестораны · кафе" data-kz="Қоғамдық тамақтандыру · мейрамханалар" data-en="F&B · restaurants · cafes">Общепит · рестораны · кафе</div>
+      <div class="ind-pains">
+        <div class="ind-pain t" data-ru="Фудкост выше 35% — где дыра?" data-kz="Фудкост 35%-дан жоғары — қайда кетіп жатыр?" data-en="Food cost above 35% — where's the leak?">Фудкост выше 35% — где дыра?</div>
+        <div class="ind-pain t" data-ru="Выручка на посадочное место по сменам" data-kz="Ауысым бойынша бір орынға тиесілі кіріс" data-en="Revenue per seat by shift">Выручка на посадочное место по сменам</div>
+        <div class="ind-pain t" data-ru="Посменный учёт — кто и сколько продал?" data-kz="Кім қанша сатты? Ауысымдық есеп" data-en="Shift accounting — who sold what?">Посменный учёт — кто и сколько продал?</div>
+        <div class="ind-pain t" data-ru="Списания и порча — скрытые расходы" data-kz="Есептен шығару мен бүлінген тауар — жасырын шығыстар" data-en="Write-offs — hidden costs">Списания и порча — скрытые расходы</div>
+      </div>
+    </div>
+    <div class="ind-card">
+      <div class="ind-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+      <div class="ind-name t" data-ru="Психология · B2C-сервисы" data-kz="Психология · B2C қызметтері" data-en="Psychology · B2C services">Психология · B2C-сервисы</div>
+      <div class="ind-pains">
+        <div class="ind-pain t" data-ru="Юнит-экономика — прибыль на каждый пакет" data-kz="Әр қызмет пакетінен қанша таза пайда қалады?" data-en="Unit economics — profit per package">Юнит-экономика — прибыль на каждый пакет</div>
+        <div class="ind-pain t" data-ru="Воронка — от звонка до оплаты" data-kz="Қоңыраудан төлемге дейін — воронканы талдаймыз" data-en="Funnel — from call to payment">Воронка — от звонка до оплаты</div>
+        <div class="ind-pain t" data-ru="LTV — сколько стоит один клиент?" data-kz="Бір клиент бизнесіңізге жалпы қанша табыс әкеледі?" data-en="LTV — what is one client worth?">LTV — сколько стоит один клиент?</div>
+        <div class="ind-pain t" data-ru="Прогноз выручки — три сценария" data-kz="Үш сценарий бойынша кіріс болжамы жасаймыз" data-en="Revenue forecast — three scenarios">Прогноз выручки — три сценария</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Мини-кейс + CTA после отраслей -->
+  <div style="margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:16px" class="fi">
+    <div style="background:var(--ink);padding:24px 28px;display:flex;flex-direction:column;justify-content:space-between">
+      <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:12px;font-weight:500" class="t" data-ru="Типичная ситуация" data-kz="Әдеттегі жағдай" data-en="Typical situation">Типичная ситуация</div>
+      <div style="font-family:'Playfair Display',serif;font-size:18px;color:#fff;line-height:1.3;margin-bottom:10px" class="t" data-ru="Оборот есть — а прибыли<br><em style='color:var(--red)'>не видно</em>" data-kz="Айналым бар — ал пайда<br><em style='color:var(--red)'>көрінбейді</em>" data-en="There's turnover — but the profit<br><em style='color:var(--red)'>is invisible</em>">Оборот есть — а прибыли<br><em style="color:var(--red)">не видно</em></div>
+      <div style="font-size:12px;color:rgba(245,240,232,0.45);line-height:1.7" class="t" data-ru="Частая картина в услугах и торговле: собственник не знает реальную маржу по каждому пакету или товару. Строим ОПиУ, настраиваем учёт — и владелец впервые видит, где деньги. <em>Иллюстративный пример.</em>" data-kz="Қызмет пен саудада жиі кездесетін көрініс: меншік иесі әр пакет не тауардың нақты маржасын білмейді. ОПиУ есебін тұрғызып, есепті реттейміз — иесі ақша қайда екенін алғаш рет көреді. <em>Үлгі мысал.</em>" data-en="A common picture in services and retail: the owner doesn't know real margin per package or product. We build a P&L, set up accounting — and the owner sees where the money is for the first time. <em>Illustrative example.</em>">Частая картина в услугах и торговле: собственник не знает реальную маржу по каждому пакету или товару. Строим ОПиУ, настраиваем учёт — и владелец впервые видит, где деньги. <em>Иллюстративный пример.</em></div>
+    </div>
+    <div style="background:var(--red-soft);border:1px solid rgba(192,57,43,0.2);padding:24px 28px;display:flex;flex-direction:column;justify-content:space-between">
+      <div>
+        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:12px;font-weight:500" class="t" data-ru="Узнайте себя в цифрах" data-kz="ӨЗІҢІЗДІ САНДАРДА ТАНЫП БІЛІҢІЗ" data-en="See your business in numbers">Узнайте себя в цифрах</div>
+        <div style="font-family:'Playfair Display',serif;font-size:18px;color:var(--ink);line-height:1.3;margin-bottom:10px" class="t" data-ru="Бесплатный разбор финансов — 45 минут" data-kz="Тегін қаржылық талдау — 45 минут" data-en="Free financial breakdown — 45 minutes">Бесплатный разбор<br>финансов — 45 минут</div>
+        <div style="font-size:12px;color:var(--ink3);line-height:1.7;margin-bottom:20px" class="t" data-ru="Покажем где ваш бизнес теряет деньги прямо сейчас. Уходите с документом на руках." data-kz="Бизнесіңіз қазір қайда ақша жоғалтып жатқанын көрсетеміз. Қолыңызда құжатпен кетесіз." data-en="We show where your business loses money right now. You leave with a document.">Покажем где ваш бизнес теряет деньги прямо сейчас. Уходите с документом на руках.</div>
+      </div>
+      <a href="https://wa.me/77070385020?text=Хочу записаться на бесплатный разбор финансов ALTO Finance" target="_blank" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:var(--white);padding:13px 24px;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;text-decoration:none;transition:background .2s" onmouseover="this.style.background='var(--red)'" onmouseout="this.style.background='var(--ink)'" class="t" data-ru="Записаться в WhatsApp →" data-kz="WhatsApp арқылы жазылу →" data-en="Book via WhatsApp →">Записаться в WhatsApp →</a>
+    </div>
+  </div>
+</section>
+
+<!-- REPORTS -->
+<section class="rep-sec" id="reports">
+  <div class="stag t" data-ru="Образцы отчётов" data-kz="Есеп үлгілері" data-en="Report samples">Образцы отчётов</div>
+  <div class="stitle t" data-ru="Так выглядят<br><em>ваши цифры</em>" data-kz="Есептеріңіз<br><em>міне осылай көрінеді</em>" data-en="This is what<br><em>your numbers look like</em>">Так выглядят<br><em>ваши цифры</em></div>
+  <div class="fi">
+    <div class="tab-bar">
+      <div class="rtab active t" onclick="switchTab('pnl',this)" data-ru="ОПиУ — прибыль" data-kz="ОПиУ — табыс есебі" data-en="P&L">ОПиУ — прибыль</div>
+      <div class="rtab t" onclick="switchTab('dds',this)" data-ru="ДДС — движение денег" data-kz="ДДС — ақша қозғалысы" data-en="Cash Flow">ДДС — движение денег</div>
+      <div class="rtab t" onclick="switchTab('cal',this)" data-ru="Платёжный календарь" data-kz="Төлем күнтізбесі" data-en="Payment Calendar">Платёжный календарь</div>
+      <div class="rtab t" onclick="switchTab('call',this)" data-ru="Колл-центр" data-kz="Қоңырау орталығы" data-en="Call Center">Колл-центр</div>
+      <div class="rtab t" onclick="switchTab('abc',this)" data-ru="ABC-анализ" data-kz="ABC-талдау" data-en="ABC Analysis">ABC-анализ</div>
+    </div>
+    <div class="tbl-wrap">
+      <!-- ОПиУ -->
+      <div class="rtable active" id="tab-pnl">
+        <table class="fin"><thead><tr><th class="t" data-ru="Статья" data-kz="Статья" data-en="Item">Статья</th><th style="text-align:right" class="t" data-ru="Янв" data-kz="Янв" data-en="Jan">Янв</th><th style="text-align:right" class="t" data-ru="Фев" data-kz="Фев" data-en="Feb">Фев</th><th style="text-align:right" class="t" data-ru="Мар" data-kz="Мар" data-en="Mar">Мар</th><th style="text-align:right" class="t" data-ru="Апр" data-kz="Апр" data-en="Apr">Апр</th><th style="text-align:right" class="t" data-ru="Итого" data-kz="Итого" data-en="Total">Итого</th></tr></thead>
+        <tbody>
+          <tr class="shdr"><td colspan="6" class="t" data-ru="ДОХОДЫ" data-kz="ДОХОДЫ" data-en="REVENUE">ДОХОДЫ</td></tr>
+          <tr><td>Выручка основная</td><td class="num">4 200 000</td><td class="num">5 100 000</td><td class="num">6 400 000</td><td class="num">7 200 000</td><td class="pos">22 900 000</td></tr>
+          <tr><td>Прочие доходы</td><td class="num">320 000</td><td class="num">410 000</td><td class="num">380 000</td><td class="num">450 000</td><td class="pos">1 560 000</td></tr>
+          <tr class="total"><td>Итого выручка</td><td class="num">4 520 000</td><td class="num">5 510 000</td><td class="num">6 780 000</td><td class="num">7 650 000</td><td class="pos">24 460 000</td></tr>
+          <tr class="shdr"><td colspan="6" class="t" data-ru="РАСХОДЫ" data-kz="РАСХОДЫ" data-en="EXPENSES">РАСХОДЫ</td></tr>
+          <tr><td>Фонд оплаты труда</td><td class="neg">−1 400 000</td><td class="neg">−1 600 000</td><td class="neg">−1 900 000</td><td class="neg">−2 100 000</td><td class="neg">−7 000 000</td></tr>
+          <tr><td>Аренда и операционные</td><td class="neg">−580 000</td><td class="neg">−580 000</td><td class="neg">−620 000</td><td class="neg">−620 000</td><td class="neg">−2 400 000</td></tr>
+          <tr><td>Маркетинг</td><td class="neg">−320 000</td><td class="neg">−390 000</td><td class="neg">−450 000</td><td class="neg">−510 000</td><td class="neg">−1 670 000</td></tr>
+          <tr class="total"><td>Чистая прибыль</td><td class="pos">1 820 000</td><td class="pos">2 340 000</td><td class="pos">3 010 000</td><td class="pos">3 420 000</td><td class="pos">10 590 000</td></tr>
+          <tr class="total"><td>Маржа</td><td class="num">40.3%</td><td class="num">42.5%</td><td class="num">44.4%</td><td class="num">44.7%</td><td class="pos">43.3%</td></tr>
+        </tbody></table>
+      </div>
+      <!-- ДДС -->
+      <div class="rtable" id="tab-dds">
+        <table class="fin"><thead><tr><th class="t" data-ru="Статья" data-kz="Статья" data-en="Item">Статья</th><th style="text-align:right" class="t" data-ru="Нед 1" data-kz="Нед 1" data-en="Wk 1">Нед 1</th><th style="text-align:right" class="t" data-ru="Нед 2" data-kz="Нед 2" data-en="Wk 2">Нед 2</th><th style="text-align:right" class="t" data-ru="Нед 3" data-kz="Нед 3" data-en="Wk 3">Нед 3</th><th style="text-align:right" class="t" data-ru="Нед 4" data-kz="Нед 4" data-en="Wk 4">Нед 4</th><th style="text-align:right" class="t" data-ru="Итого" data-kz="Итого" data-en="Total">Итого</th></tr></thead>
+        <tbody>
+          <tr class="shdr"><td colspan="6" class="t" data-ru="ПОСТУПЛЕНИЯ" data-kz="ПОСТУПЛЕНИЯ" data-en="INFLOWS">ПОСТУПЛЕНИЯ</td></tr>
+          <tr><td>Оплаты клиентов</td><td class="pos">820 000</td><td class="pos">1 100 000</td><td class="pos">950 000</td><td class="pos">1 230 000</td><td class="pos">4 100 000</td></tr>
+          <tr><td>Прочие поступления</td><td class="pos">120 000</td><td class="pos">80 000</td><td class="pos">160 000</td><td class="pos">60 000</td><td class="pos">420 000</td></tr>
+          <tr class="total"><td>Итого приход</td><td class="num">940 000</td><td class="num">1 180 000</td><td class="num">1 110 000</td><td class="num">1 290 000</td><td class="pos">4 520 000</td></tr>
+          <tr class="shdr"><td colspan="6" class="t" data-ru="ВЫПЛАТЫ" data-kz="ВЫПЛАТЫ" data-en="OUTFLOWS">ВЫПЛАТЫ</td></tr>
+          <tr><td>Зарплата (10-е)</td><td class="neg">—</td><td class="neg">—</td><td class="neg">—</td><td class="neg">−1 400 000</td><td class="neg">−1 400 000</td></tr>
+          <tr><td>Аренда (1-е)</td><td class="neg">−580 000</td><td class="neg">—</td><td class="neg">—</td><td class="neg">—</td><td class="neg">−580 000</td></tr>
+          <tr><td>Поставщики</td><td class="neg">—</td><td class="neg">−320 000</td><td class="neg">—</td><td class="neg">−280 000</td><td class="neg">−600 000</td></tr>
+          <tr class="total"><td>Остаток</td><td class="pos">360 000</td><td class="pos">1 220 000</td><td class="pos">2 330 000</td><td class="pos">1 940 000</td><td class="pos">1 940 000</td></tr>
+        </tbody></table>
+      </div>
+      <!-- Платёжный календарь -->
+      <div class="rtable" id="tab-cal">
+        <table class="fin"><thead><tr><th class="t" data-ru="Статья" data-kz="Статья" data-en="Item">Статья</th><th style="text-align:right" class="t" data-ru="Янв" data-kz="Янв" data-en="Jan">Янв</th><th style="text-align:right" class="t" data-ru="Фев" data-kz="Фев" data-en="Feb">Фев</th><th style="text-align:right" class="t" data-ru="Мар" data-kz="Мар" data-en="Mar">Мар</th><th style="text-align:right" class="t" data-ru="План" data-kz="План" data-en="Plan">План</th><th style="text-align:right" class="t" data-ru="Факт" data-kz="Факт" data-en="Actual">Факт</th></tr></thead>
+        <tbody>
+          <tr class="shdr"><td colspan="6">ПОСТУПЛЕНИЯ (ожидаемые)</td></tr>
+          <tr><td>5-е — клиенты</td><td class="pos">1 200 000</td><td class="pos">1 400 000</td><td class="pos">1 800 000</td><td class="pos">1 500 000</td><td class="pos">1 800 000</td></tr>
+          <tr><td>20-е — дебиторы</td><td class="pos">600 000</td><td class="pos">750 000</td><td class="pos">820 000</td><td class="pos">720 000</td><td class="pos">820 000</td></tr>
+          <tr class="shdr"><td colspan="6" class="t" data-ru="ОБЯЗАТЕЛЬНЫЕ ВЫПЛАТЫ" data-kz="ОБЯЗАТЕЛЬНЫЕ ВЫПЛАТЫ" data-en="MANDATORY PAYMENTS">ОБЯЗАТЕЛЬНЫЕ ВЫПЛАТЫ</td></tr>
+          <tr><td>1-е — аренда</td><td class="neg">−580 000</td><td class="neg">−580 000</td><td class="neg">−580 000</td><td class="neg">−580 000</td><td class="neg">−580 000</td></tr>
+          <tr><td>5-е — налоги</td><td class="neg">−210 000</td><td class="neg">−245 000</td><td class="neg">−290 000</td><td class="neg">−250 000</td><td class="neg">−290 000</td></tr>
+          <tr><td>10-е — зарплата</td><td class="neg">−1 400 000</td><td class="neg">−1 400 000</td><td class="neg">−1 600 000</td><td class="neg">−1 450 000</td><td class="neg">−1 600 000</td></tr>
+          <tr class="total"><td>Остаток на конец</td><td class="pos">2 410 000</td><td class="pos">3 135 000</td><td class="pos">4 185 000</td><td class="pos">3 440 000</td><td class="pos">4 185 000</td></tr>
+          <tr class="total"><td>Кассовый разрыв</td><td colspan="5" style="color:#16613A;font-size:11px;padding:8px 13px">✓ Отсутствует — платёжный календарь работает</td></tr>
+        </tbody></table>
+      </div>
+      <!-- Колл-центр -->
+      <div class="rtable" id="tab-call">
+        <table class="fin"><thead><tr><th>Показатель</th><th style="text-align:right">День</th><th style="text-align:right">Неделя</th><th style="text-align:right">Месяц</th><th style="text-align:right">Норма</th><th style="text-align:right">Откл.</th></tr></thead>
+        <tbody>
+          <tr class="shdr"><td colspan="6" class="t" data-ru="ВХОДЯЩИЙ ПОТОК" data-kz="ВХОДЯЩИЙ ПОТОК" data-en="INBOUND FLOW">ВХОДЯЩИЙ ПОТОК</td></tr>
+          <tr><td class="t" data-ru="Входящих звонков" data-kz="Входящих звонков" data-en="Incoming calls">Входящих звонков</td><td class="num">42</td><td class="num">210</td><td class="num">840</td><td class="num">800</td><td class="up">+5.0% ↑</td></tr>
+          <tr><td class="t" data-ru="Записей создано" data-kz="Записей создано" data-en="Appointments made">Записей создано</td><td class="num">31</td><td class="num">155</td><td class="num">620</td><td class="num">600</td><td class="up">+3.3% ↑</td></tr>
+          <tr><td class="t" data-ru="Явка на приём" data-kz="Явка на приём" data-en="Show rate">Явка на приём</td><td class="num">27</td><td class="num">135</td><td class="num">540</td><td class="num">520</td><td class="up">+3.8% ↑</td></tr>
+          <tr class="shdr"><td colspan="6" class="t" data-ru="КОНВЕРСИЯ" data-kz="КОНВЕРСИЯ" data-en="CONVERSION">КОНВЕРСИЯ</td></tr>
+          <tr><td class="t" data-ru="Звонок → запись" data-kz="Звонок → запись" data-en="Call → appointment">Звонок → запись</td><td class="num">73.8%</td><td class="num">—</td><td class="num">—</td><td class="num">70.0%</td><td class="up">+3.8% ↑</td></tr>
+          <tr><td class="t" data-ru="Запись → явка" data-kz="Запись → явка" data-en="Appointment → show">Запись → явка</td><td class="num">87.1%</td><td class="num">—</td><td class="num">—</td><td class="num">85.0%</td><td class="up">+2.1% ↑</td></tr>
+          <tr><td class="t" data-ru="Повторные обращения" data-kz="Повторные обращения" data-en="Repeat visits">Повторные обращения</td><td class="num">14</td><td class="num">70</td><td class="num">280</td><td class="num">300</td><td class="dn">−6.7% ↓</td></tr>
+          <tr class="shdr"><td colspan="6" class="t" data-ru="ФИНАНСЫ" data-kz="ФИНАНСЫ" data-en="FINANCIALS">ФИНАНСЫ</td></tr>
+          <tr><td class="t" data-ru="Выручка за день" data-kz="Выручка за день" data-en="Daily revenue">Выручка за день</td><td class="pos">324 000 ₸</td><td class="pos">1 620 000</td><td class="pos">6 480 000</td><td class="num">6 000 000</td><td class="up">+8.0% ↑</td></tr>
+          <tr><td class="t" data-ru="Средний чек" data-kz="Средний чек" data-en="Average check">Средний чек</td><td class="pos">12 000 ₸</td><td class="num">—</td><td class="num">—</td><td class="num">11 500</td><td class="up">+4.3% ↑</td></tr>
+          <tr class="total"><td class="t" data-ru="Выручка на 1 звонок" data-kz="Выручка на 1 звонок" data-en="Revenue per call">Выручка на 1 звонок</td><td class="pos">7 714 ₸</td><td class="num">—</td><td class="num">—</td><td class="num">7 500</td><td class="up">+2.9% ↑</td></tr>
+        </tbody></table>
+        <div style="padding:10px 13px;font-size:11px;color:var(--ink4);font-style:italic">* Пример для медицинского центра. Метрики адаптируются под любую отрасль с колл-центром.</div>
+      </div>
+      <!-- ABC-анализ -->
+      <div class="rtable" id="tab-abc">
+        <table class="fin"><thead><tr><th>Специалист / Услуга</th><th style="text-align:right">Выручка ₸</th><th style="text-align:right">Доля</th><th style="text-align:center">Группа</th><th>Рекомендация</th></tr></thead>
+        <tbody>
+          <tr class="shdr"><td colspan="5" class="t" data-ru="ГРУППА A — 70% выручки · Развивать и удерживать" data-kz="ГРУППА A — 70% выручки · Развивать и удерживать" data-en="GROUP A — 70% revenue · Develop & retain">ГРУППА A — 70% выручки · Развивать и удерживать</td></tr>
+          <tr><td>Доктор Иванов (терапевт)</td><td class="pos">2 100 000</td><td class="pos">32.3%</td><td style="text-align:center"><span style="background:#DCFCE7;color:#16A34A;padding:2px 8px;font-size:10px;font-weight:600">A</span></td><td class="t" data-ru="Удержать. Повысить чек. Наставник для B-группы" data-kz="Удержать. Повысить чек. Наставник для B-группы" data-en="Retain. Raise price. Mentor for B-group">Удержать. Повысить чек. Наставник для B-группы</td></tr>
+          <tr><td>Первичный приём</td><td class="pos">1 800 000</td><td class="pos">27.7%</td><td style="text-align:center"><span style="background:#DCFCE7;color:#16A34A;padding:2px 8px;font-size:10px;font-weight:600">A</span></td><td class="t" data-ru="Увеличить поток через маркетинг" data-kz="Увеличить поток через маркетинг" data-en="Increase flow through marketing">Увеличить поток через маркетинг</td></tr>
+          <tr><td>Реабилитация (курс)</td><td class="pos">800 000</td><td class="pos">12.3%</td><td style="text-align:center"><span style="background:#DCFCE7;color:#16A34A;padding:2px 8px;font-size:10px;font-weight:600">A</span></td><td class="t" data-ru="Масштабировать. Добавить ещё специалиста" data-kz="Масштабировать. Добавить ещё специалиста" data-en="Scale up. Add another specialist">Масштабировать. Добавить ещё специалиста</td></tr>
+          <tr class="shdr"><td colspan="5" class="t" data-ru="ГРУППА B — 20% выручки · Развивать" data-kz="ГРУППА B — 20% выручки · Развивать" data-en="GROUP B — 20% revenue · Develop">ГРУППА B — 20% выручки · Развивать</td></tr>
+          <tr><td>Доктор Петров (невролог)</td><td class="num">450 000</td><td class="num">6.9%</td><td style="text-align:center"><span style="background:#FEF9C3;color:#CA8A04;padding:2px 8px;font-size:10px;font-weight:600">B</span></td><td class="t" data-ru="Наставничество от A-группы. Цель — перейти в A" data-kz="Наставничество от A-группы. Цель — перейти в A" data-en="Mentoring from A-group. Goal — move to A">Наставничество от A-группы. Цель — перейти в A</td></tr>
+          <tr><td>Диагностика (разовая)</td><td class="num">380 000</td><td class="num">5.8%</td><td style="text-align:center"><span style="background:#FEF9C3;color:#CA8A04;padding:2px 8px;font-size:10px;font-weight:600">B</span></td><td class="t" data-ru="Пакетирование с другими услугами" data-kz="Пакетирование с другими услугами" data-en="Bundle with other services">Пакетирование с другими услугами</td></tr>
+          <tr class="shdr"><td colspan="5" class="t" data-ru="ГРУППА C — 10% выручки · Пересмотреть" data-kz="ГРУППА C — 10% выручки · Пересмотреть" data-en="GROUP C — 10% revenue · Reconsider">ГРУППА C — 10% выручки · Пересмотреть</td></tr>
+          <tr><td>Доктор Сидоров (педиатр)</td><td class="neg">180 000</td><td class="neg">2.8%</td><td style="text-align:center"><span style="background:#FEE2E2;color:#DC2626;padding:2px 8px;font-size:10px;font-weight:600">C</span></td><td class="t" data-ru="Пересмотр формата или замена" data-kz="Пересмотр формата или замена" data-en="Review format or replace">Пересмотр формата или замена</td></tr>
+          <tr><td>Групповые занятия</td><td class="neg">120 000</td><td class="neg">1.8%</td><td style="text-align:center"><span style="background:#FEE2E2;color:#DC2626;padding:2px 8px;font-size:10px;font-weight:600">C</span></td><td class="t" data-ru="Закрыть или полностью переформатировать" data-kz="Закрыть или полностью переформатировать" data-en="Close or fully reformat">Закрыть или полностью переформатировать</td></tr>
+          <tr class="total"><td>Итого</td><td class="pos">6 500 000</td><td class="num">100%</td><td colspan="2" style="font-size:11px;color:var(--ink3);padding:8px 13px">A — держите и растите. B — вкладывайте. C — решайте быстро.</td></tr>
+        </tbody></table>
+        <div style="padding:10px 13px;font-size:11px;color:var(--ink4);font-style:italic">* ABC-анализ применим к врачам, товарам, услугам, клиентам, каналам продаж — любому направлению бизнеса.</div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--ink4);margin-top:10px;font-style:italic" class="t" data-ru="* Иллюстративные данные. Реальные отчёты — под специфику вашего бизнеса." data-kz="* Бұл үлгі деректер. Нақты есептер — сіздің бизнесіңіздің ерекшелігіне сай жасалады." data-en="* Illustrative data. Real reports are tailored to your business.">* Иллюстративные данные. Реальные отчёты — под специфику вашего бизнеса.</p>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how-sec" id="how">
+  <div class="stag t" data-ru="Как мы работаем" data-kz="Біз қалай жұмыс жасаймыз" data-en="How we work">Как мы работаем</div>
+  <div class="stitle t" data-ru="Четыре шага<br>до <em>ясности</em>" data-kz="Қаржылық тәртіп орнату үшін<br><em>төрт қадам</em>" data-en="Four steps<br>to <em>clarity</em>">Четыре шага<br>до <em>ясности</em></div>
+  <div class="how-grid fi">
+    <div class="how-step"><div class="step-num">01</div><div class="step-title t" data-ru="Разбор 45 минут" data-kz="45 минуттық тегін талдау" data-en="45-minute breakdown">Разбор 45 минут</div><div class="step-desc t" data-ru="Бесплатно. Финансовый диагноз вашего бизнеса. Уходите с документом на руках." data-kz="Тегін. Бизнесіңіздің қаржылық диагнозын жасаймыз. Қолыңызда дайын құжатпен кетесіз." data-en="Free. Financial diagnosis. You leave with a document.">Бесплатно. Финансовый диагноз вашего бизнеса. Уходите с документом на руках.</div></div>
+    <div class="how-step"><div class="step-num">02</div><div class="step-title t" data-ru="КП и договор" data-kz="Ұсыныс және шарт" data-en="Proposal & contract">КП и договор</div><div class="step-desc t" data-ru="Конкретные услуги и точная цена под ваш масштаб. NDA подписываем в первый день." data-kz="Нақты қызметтер мен дәл баға. NDA — бірінші күннен." data-en="Specific services, exact price. NDA signed on day one.">Конкретные услуги и точная цена под ваш масштаб. NDA подписываем в первый день.</div></div>
+    <div class="how-step"><div class="step-num">03</div><div class="step-title t" data-ru="Постановка системы" data-kz="Жүйені іске қосу" data-en="System setup">Постановка системы</div><div class="step-desc t" data-ru="ДДС, ОПиУ, платёжный календарь под ваш бизнес. 2–4 недели — и система работает." data-kz="ДДС, ОПиУ, төлем күнтізбесі — бизнесіңізге арналған жүйе. 2–4 апта ішінде іске қосылады." data-en="Cash Flow, P&L, payment calendar. 2–4 weeks to launch.">ДДС, ОПиУ, платёжный календарь под ваш бизнес. 2–4 недели — и система работает.</div></div>
+    <div class="how-step"><div class="step-num">04</div><div class="step-title t" data-ru="Ежемесячный контроль" data-kz="Ай сайынғы қадағалау" data-en="Monthly control">Ежемесячный контроль</div><div class="step-desc t" data-ru="Ведём учёт, разбираем показатели с собственником. Решения на основе цифр, а не ощущений." data-kz="Есеп жүргіземіз, меншік иесімен нәтижені талдаймыз. Шешімдер сезімге емес, сандарға негізделеді." data-en="Maintain accounts, review KPIs with owner. Decisions based on numbers.">Ведём учёт, разбираем показатели с собственником. Решения на основе цифр, а не ощущений.</div></div>
+  </div>
+</section>
+
+<!-- REMOTE -->
+<section class="remote-sec" id="remote">
+  <div class="remote-grid fi">
+    <div>
+      <div class="stag t" style="color:var(--red)" data-ru="Работаем удалённо" data-kz="Қашықтан жұмыс" data-en="We work remotely">Работаем удалённо</div>
+      <div class="remote-title t" data-ru="Ваш бизнес в Туркестане,<br>Астане или Дубае —<br><em>нам без разницы</em>" data-kz="Бизнесіңіз Түркістанда,<br>Астанада немесе Дубайда болса да —<br><em>бізге еш айырмасы жоқ</em>" data-en="Your business in Turkestan,<br>Astana or Dubai —<br><em>we don't mind</em>">Ваш бизнес в Туркестане,<br>Астане или Дубае —<br><em>нам без разницы</em></div>
+      <p class="remote-text t" data-ru="Аутсорс — это и значит удалённо. Всё что нужно — это доступ к данным. Уже 4+ месяца ведём клиентов из разных городов Казахстана полностью онлайн. <strong>Встречи в Zoom. Отчёты в Telegram. Данные в Google Sheets.</strong>" data-kz="Аутсорс — қашықтан жұмыс. Бізге тек деректерге қол жеткізу жеткілікті. <strong>Кездесулер Zoom арқылы. Есептер Telegram-да. Деректер Google Sheets-те.</strong>" data-en="Outsource means remote. All we need is access to data. We've been working with clients from different cities for 4+ months. <strong>Meetings on Zoom. Reports on Telegram. Data in Google Sheets.</strong>">Аутсорс — это и значит удалённо. Всё что нужно — это доступ к данным. Уже 4+ месяца ведём клиентов из разных городов Казахстана полностью онлайн. <strong>Встречи в Zoom. Отчёты в Telegram. Данные в Google Sheets.</strong></p>
+    </div>
+    <div class="remote-items">
+      <div class="remote-item">
+        <div class="ri-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div>
+          <div class="ri-title t" data-ru="Любой город Казахстана" data-kz="Қазақстанның кез келген қаласы" data-en="Any city in Kazakhstan">Любой город Казахстана</div>
+          <div class="ri-desc t" data-ru="Алматы, Астана, Шымкент, Туркестан, Актобе — работаем с клиентами по всей стране." data-kz="Алматы, Астана, Шымкент, Түркістан — Қазақстанның кез келген қаласынан жұмыс жасаймыз." data-en="Almaty, Astana, Shymkent, Turkestan — we work across the country.">Алматы, Астана, Шымкент, Туркестан, Актобе — работаем с клиентами по всей стране.</div>
+        </div>
+      </div>
+      <div class="remote-item">
+        <div class="ri-ico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div>
+          <div class="ri-title t" data-ru="ИИ-команда работает 24/7" data-kz="Жасанды интеллект командамыз тәулік бойы жұмыс жасайды" data-en="AI team works 24/7">ИИ-команда работает 24/7</div>
+          <div class="ri-desc t" data-ru="Это не значит что мы не спим. Это значит: аналитика обрабатывается автоматически. Утром вы видите готовые данные." data-kz="Бұл ұйықтамаймыз дегенді білдірмейді. Аналитика автоматты түрде өңделеді — таңертең дайын нәтижені көресіз." data-en="It means analytics are processed automatically. You see ready data in the morning.">Это не значит что мы не спим. Это значит: аналитика обрабатывается автоматически. Утром вы видите готовые данные.</div>
+        </div>
+      </div>
+      <div class="remote-item">
+        <div class="ri-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div>
+          <div class="ri-title t" data-ru="Безопасность данных — NDA" data-kz="Деректеріңіздің қауіпсіздігі — NDA" data-en="Data security — NDA">Безопасность данных — NDA</div>
+          <div class="ri-desc t" data-ru="Подписываем соглашение о конфиденциальности в первый день. Ваши данные никогда не передаются третьим лицам." data-kz="Бірінші күннен бастап құпиялылық келісіміне қол қоямыз. Деректеріңіз үшінші тараптарға берілмейді." data-en="We sign NDA on day one. Your data is never shared with third parties.">Подписываем соглашение о конфиденциальности в первый день. Ваши данные никогда не передаются третьим лицам.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why-sec" id="why">
+  <div class="stag t" data-ru="Почему ALTO Finance" data-kz="Неліктен ALTO Finance?" data-en="Why ALTO Finance">Почему ALTO Finance</div>
+  <div class="stitle t" data-ru="Строим системы.<br><em>Говорим прямо.</em>" data-kz="Жүйелер тұрғызамыз.<br><em>Тура айтамыз.</em>" data-en="We build systems.<br><em>We speak directly.</em>">Строим системы.<br><em>Говорим прямо.</em></div>
+  <div class="why-grid fi">
+    <div>
+      <p class="why-text t" data-ru="Собственнику нужен не красивый отчёт — ему нужен человек, который смотрит на его бизнес честно. Мы не приходим выполнить работу и уйти. <strong>Мы приходим разобраться.</strong> Иногда настаиваем на решениях — потому что видим цифры и видим дальше." data-kz="Меншік иесіне әдемі есеп емес — бизнесіне шынайы көзбен қарайтын адам керек. Біз тек жұмысты орындап кетпейміз. <strong>Біз түсінуге келеміз.</strong> Кейде ұсыныстарымызда қатаң тұрамыз — өйткені сандарды көреміз және алдыға қараймыз." data-en="Owners don't need a pretty report — they need someone honest. <strong>We come to understand.</strong> Sometimes we insist on decisions — because we see the numbers and see further.">Собственнику нужен не красивый отчёт — ему нужен человек, который смотрит на его бизнес честно. Мы не приходим выполнить работу и уйти. <strong>Мы приходим разобраться.</strong> Иногда настаиваем на решениях — потому что видим цифры и видим дальше.</p>
+      <div class="why-certs">
+        <div class="why-cert"><div class="c-lbl t" data-ru="Профиль" data-kz="Бағыт" data-en="Profile">Профиль</div><div class="c-val" class="t" data-ru="Аутсорс CFO" data-kz="Аутсорс CFO" data-en="Outsource CFO">Аутсорс CFO</div></div>
+        <div class="why-cert"><div class="c-lbl">NDA</div><div class="c-val" class="t" data-ru="С первого дня" data-kz="Бірінші күннен бастап" data-en="From day one">С первого дня</div></div>
+        <div class="why-cert"><div class="c-lbl t" data-ru="Рынок" data-kz="Нарық" data-en="Market">Рынок</div><div class="c-val">KZ · CIS</div></div>
+        <div class="why-cert"><div class="c-lbl t" data-ru="Язык" data-kz="Тіл" data-en="Language">Язык</div><div class="c-val">RU · KZ · EN</div></div>
+      </div>
+    </div>
+    <div class="why-props">
+      <div class="why-prop"><div class="wp-tag t" data-ru="Подход" data-kz="Тәсіл" data-en="Approach">Подход</div><div class="wp-title t" data-ru="Строим систему — не закрываем задачи" data-kz="Жүйе тұрғызамыз — тапсырма жабпаймыз" data-en="Build systems — not just tick tasks">Строим систему — не закрываем задачи</div><div class="wp-desc t" data-ru="Нас радует когда системы не было, а мы выстроили. Это настоящий результат." data-kz="Ештеңе болмаған жерде жүйе қалыптасқанда — бұл нақты нәтиже." data-en="We're driven by building what didn't exist. That's the real result.">Нас радует когда системы не было, а мы выстроили. Это настоящий результат.</div></div>
+      <div class="why-prop"><div class="wp-tag t" data-ru="Стиль" data-kz="Стиль" data-en="Style">Стиль</div><div class="wp-title t" data-ru="Говорим прямо — даже если неудобно" data-kz="Тура айтамыз — ыңғайсыз болса да" data-en="Direct — even when uncomfortable">Говорим прямо — даже если неудобно</div><div class="wp-desc t" data-ru="Настоящий CFO не соглашается со всем. Говорит правду и защищает бизнес." data-kz="Нағыз қаржы директоры бәрімен келіспейді. Шындықты айтады және бизнесті қорғайды." data-en="A real CFO doesn't agree with everything. Tells the truth, protects the business.">Настоящий CFO не соглашается со всем. Говорит правду и защищает бизнес.</div></div>
+      <div class="why-prop"><div class="wp-tag t" data-ru="Защита" data-kz="Сенімділік" data-en="Protection">Защита</div><div class="wp-title t" data-ru="NDA с первого дня" data-kz="Бірінші күннен NDA" data-en="NDA from day one">NDA с первого дня</div><div class="wp-desc t" data-ru="Ваши данные не передаются третьим лицам. Конфиденциальность — обязательное условие." data-kz="Деректеріңіз ешқашан үшінші тараптарға берілмейді. Құпиялылық — міндетті шарт." data-en="Your data is never shared. Mandatory condition.">Ваши данные не передаются третьим лицам. Конфиденциальность — обязательное условие.</div></div>
+      <div class="why-prop"><div class="wp-tag t" data-ru="Скорость" data-kz="Жылдамдық" data-en="Speed">Скорость</div><div class="wp-title t" data-ru="Отвечаем в течение часа" data-kz="Бір сағат ішінде жауап" data-en="Response within one hour">Отвечаем в течение часа</div><div class="wp-desc t" data-ru="Доступны в рабочее время. Срочные вопросы — всегда на связи." data-kz="Жұмыс уақытында қолжетімдіміз. Шұғыл мәселелер бойынша — әрдайым байланыстамыз." data-en="Available during business hours. Urgent matters — always reachable.">Доступны в рабочее время. Срочные вопросы — всегда на связи.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST / Нам доверяют -->
+<section class="trust-sec" id="trust" style="padding:64px 24px;background:#F5F0E8;border-top:1px solid #D6CFC4">
+  <div style="max-width:1000px;margin:0 auto;text-align:center">
+    <div class="stag t" data-ru="Нам доверяют" data-kz="Бізге сенеді" data-en="Trusted by" style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#C0392B;font-weight:600;margin-bottom:10px">Нам доверяют</div>
+    <div class="stitle t" data-ru="Партнёры и клиенты" data-kz="Серіктестер мен клиенттер" data-en="Partners & clients" style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#1C1917;margin-bottom:28px">Партнёры и клиенты</div>
+    <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap">
+      <a href="https://bauberg.kz" target="_blank" rel="noopener" style="display:block;background:#1C1917;border:1px solid #1C1917;border-radius:10px;padding:26px 36px;text-decoration:none;min-width:260px;transition:.2s">
+        <img src="assets/bauberg-logo.png" alt="Bauberg" style="height:38px;width:auto;display:block;margin:0 auto 10px">
+        <div class="t" data-ru="Проектирование и отделка бизнес-интерьеров под ключ" data-kz="Бизнес-интерьерлерді жобалау және кілтпен әрлеу" data-en="Turnkey design & fit-out of business interiors" style="font-size:12px;color:#A8A29E;text-align:center">Проектирование и отделка бизнес-интерьеров под ключ</div>
+      </a>
+      <div style="background:#1C1917;border:1px solid #1C1917;border-radius:10px;padding:26px 36px;min-width:260px;display:flex;flex-direction:column;justify-content:center">
+        <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#FDFCF9;letter-spacing:1px;text-align:center;margin-bottom:8px">Керемет</div>
+        <div class="t" data-ru="Продажа строительных материалов · Казахстан" data-kz="Құрылыс материалдарын сату · Қазақстан" data-en="Building materials retail · Kazakhstan" style="font-size:12px;color:#A8A29E;text-align:center">Продажа строительных материалов · Казахстан</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec" id="cta">
+  <div class="cta-grid">
+    <div class="cta-left">
+      <div class="cta-eyebrow t" data-ru="Начать работу" data-kz="Жұмысты бастайық" data-en="Get started">Начать работу</div>
+      <div class="cta-title t" data-ru="Давайте разберём<br><em>ваш бизнес</em>" data-kz="Бизнесіңізді<br><em>бірге талдайық</em>" data-en="Let's break down<br><em>your business</em>">Давайте разберём<br><em>ваш бизнес</em></div>
+      <div class="cta-div"></div>
+      <div class="cta-contacts">
+        <a href="https://wa.me/77070385020?text=Хочу записаться на бесплатный разбор финансов ALTO Finance" target="_blank" class="cta-c"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><div><span class="cta-c-lbl">WhatsApp</span><span class="cta-c-val">+7 707 038-50-20</span></div></a>
+        <a href="https://instagram.com/altofinance.kz" target="_blank" class="cta-c"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><div><span class="cta-c-lbl">Instagram</span><span class="cta-c-val">@altofinance.kz</span></div></a>
+        <div class="cta-c"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><div><span class="cta-c-lbl">Сайт</span><span class="cta-c-val">altofinance.kz</span></div></div>
+      </div>
+      <div class="cta-nda"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span class="t" data-ru="NDA с первого дня · Данные защищены · Работаем удалённо" data-kz="NDA бірінші күннен · Деректер қорғалған · Қашықтан жұмыс" data-en="NDA from day one · Data protected · Remote work">NDA с первого дня · Данные защищены · Работаем удалённо</span></div>
+    </div>
+    <div class="cta-right">
+      <span class="cta-r-tag t" data-ru="Бесплатно · Без обязательств · Онлайн или вживую" data-kz="Тегін · Ешқандай міндеттемесіз · Онлайн немесе тікелей кездесу" data-en="Free · No obligations · Online or in person" data-ru="Бесплатно · Без обязательств · Онлайн или вживую" data-kz="Тегін · Міндеттемесіз · Онлайн немесе тікелей" data-en="Free · No obligations · Online or in person">Бесплатно · Без обязательств · Онлайн или вживую</span>
+      <div class="cta-r-title t" data-ru="Разбор финансов за 45 минут" data-kz="Тегін 45 минуттық қаржылық талдау" data-en="45-minute financial breakdown" data-ru="Разбор финансов за 45 минут" data-kz="45 минуттық қаржылық талдау" data-en="45-minute financial breakdown">Разбор финансов за 45 минут</div>
+      <p class="cta-r-desc t" data-ru="Покажем где бизнес теряет деньги прямо сейчас. Уходите с финансовым диагнозом на руках. Без давления." data-kz="Бизнесіңіз қазір қайда ақша жоғалтып жатқанын көрсетеміз. Қолыңызда құжатпен кетесіз." data-en="We show where your business loses money right now. You leave with a diagnosis. No pressure." data-ru="Покажем где бизнес теряет деньги прямо сейчас. Уходите с финансовым диагнозом на руках. Без давления." data-kz="Бизнесіңіз қазір қайда ақша жоғалтатынын көрсетеміз. Қолыңызда диагноз құжатымен кетесіз. Қысымсыз." data-en="We show where your business loses money. You leave with a diagnosis. No pressure.">Покажем где бизнес теряет деньги прямо сейчас. Уходите с финансовым диагнозом на руках. Без давления.</p>
+      <div class="cta-r-items">
+        <div class="cta-r-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Карта потерь — где уходят деньги" data-kz="Ақшаның қайда кететінің картасы" data-en="Loss map — where money goes">Карта потерь — где уходят деньги</span></div>
+        <div class="cta-r-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="3–5 конкретных рекомендаций под ваш бизнес" data-kz="Бизнесіңізге арналған 3–5 нақты ұсыныс" data-en="3–5 specific recommendations for your business">3–5 конкретных рекомендаций под ваш бизнес</span></div>
+        <div class="cta-r-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Финансовый диагноз — документ на руках" data-kz="Қаржылық диагноз — қолыңызда құжат" data-en="Financial diagnosis — document in hand">Финансовый диагноз — документ на руках</span></div>
+        <div class="cta-r-item"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg><span class="t" data-ru="Стоимость услуг под ваш масштаб" data-kz="Бизнесіңіздің көлеміне сай қызмет бағасы" data-en="Service cost tailored to your scale">Стоимость услуг под ваш масштаб</span></div>
+      </div>
+      <a href="https://wa.me/77070385020?text=Хочу записаться на бесплатный разбор финансов ALTO Finance" target="_blank" class="btn-wa-big">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.532 5.845L0 24l6.335-1.51A11.956 11.956 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.003-1.368l-.36-.214-3.727.977.994-3.638-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>
+        <span class="t" data-ru="Записаться в WhatsApp" data-kz="WhatsApp арқылы жазылу" data-en="Book via WhatsApp">Записаться в WhatsApp</span>
+      </a>
+      <a href="https://instagram.com/altofinance.kz" target="_blank" class="btn-ig-big">
+        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        <span t data-ru="Написать в Instagram" data-kz="Instagram арқылы жазу" data-en="Message on Instagram">Написать в Instagram</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">A<span>L</span>TO FINANCE</div>
+  <div class="f-mission t" data-ru="Финансы без переводчика · Порядок в финансах. Свобода в решениях." data-kz="Финансы без переводчика · Порядок в финансах. Свобода в решениях." data-en="Finance without a translator · Order in finance. Freedom in decisions.">Финансы без переводчика · Порядок в финансах. Свобода в решениях.</div>
+  <div class="f-copy">© 2025 ALTO Finance · altofinance.kz</div>
+</footer>
+
+<script>
+const sids=['s0','offer','industries','reports','how','remote','why','cta'];
+let lang='ru';
+function setLang(l){lang=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===l));document.querySelectorAll('[data-ru]').forEach(el=>{const v=el.getAttribute('data-'+l);if(v)el.innerHTML=v;});document.documentElement.lang=l==='kz'?'kk':l;}
+function setupNav(){const nd=document.getElementById('navDots');if(!nd||nd.children.length)return;sids.forEach(id=>{const d=document.createElement('div');d.className='ndot';d.onclick=()=>document.getElementById(id)?.scrollIntoView({behavior:'smooth'});nd.appendChild(d);});const dots=nd.querySelectorAll('.ndot');const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const i=sids.indexOf(e.target.id);if(i>=0)dots.forEach((d,j)=>d.classList.toggle('active',i===j));}});},{threshold:0.3});sids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});}
+function switchTab(id,el){document.querySelectorAll('.rtab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.rtable').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('tab-'+id).classList.add('active');}
+const fo=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v');});},{threshold:0.06});
+document.querySelectorAll('.fi').forEach(el=>fo.observe(el));
+window.addEventListener('load',setupNav);
+</script>
+</body>
+</html>
