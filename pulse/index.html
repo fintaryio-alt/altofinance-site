@@ -70,7 +70,9 @@
   .score-num{font-family:'Playfair Display',serif;font-weight:700;font-size:72px;line-height:1;letter-spacing:-2px}
   .score-100{font-size:24px;color:var(--ink4);font-weight:400}
   .tier{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;margin-top:6px}
-  .diag{font-size:15px;font-weight:300;color:var(--ink2);text-align:center;margin:14px auto 26px;max-width:480px;line-height:1.7}
+  .diag{font-size:15px;font-weight:300;color:var(--ink2);text-align:center;margin:14px auto 22px;max-width:480px;line-height:1.7}
+  .money-line{max-width:480px;margin:0 auto 26px;background:var(--red-soft);border:1px solid rgba(192,57,43,.2);border-radius:12px;padding:14px 18px;font-size:14px;font-weight:300;color:var(--ink2);text-align:center;line-height:1.6}
+  .money-line b{color:var(--red2);font-weight:600}
   .bars{display:flex;flex-direction:column;gap:14px;margin-bottom:30px}
   .bar-head{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
   .bar-head .nm{font-weight:500}
@@ -132,6 +134,7 @@
     <div class="label" id="rLabel" style="text-align:center;margin-bottom:6px"></div>
     <div class="gauge"><span class="score-num" id="scoreNum">0</span><span class="score-100">/100</span><div class="tier" id="tier"></div></div>
     <p class="diag" id="diag"></p>
+    <div class="money-line" id="moneyLine" style="display:none"></div>
     <div class="bars" id="bars"></div>
     <div class="recs"><h3 id="rRecsH"></h3><div id="recList"></div></div>
     <div class="cta-box">
@@ -159,7 +162,8 @@ const T = {
     rLabel:"Ваш результат", rRecsH:"3 точки, с которых начать",
     ctaL:"Следующий шаг", ctaH:"Разберём эти точки на вашем бизнесе — бесплатно",
     ctaS:"45 минут. Уходите с понятным планом, а не с продажей.",
-    wa:"Получить разбор в WhatsApp →", restart:"Пройти заново" },
+    wa:"Получить разбор в WhatsApp →", restart:"Пройти заново",
+    money:x=>`При вашем обороте каждые <b>5% маржи</b>, которых вы не видите, — это <b>≈ ${x} ₸ в месяц</b> мимо кассы.` },
   kz:{ backSite:"← Сайтқа", step:(a,b)=>`${a} / ${b} қадам`, done:"Дайын",
     iLabel:"Қаржылық тексеру", iH1:"Бизнесіңіз <em>қаржылық</em> жағынан сау ма?",
     iLead:"5 минутта 10 сұрақ. Соңында — 0-ден 100-ге дейінгі әділ баға және сіз дәл қазір ақша жоғалтып не көрмей жүрген 3 нүкте.",
@@ -168,7 +172,8 @@ const T = {
     rLabel:"Сіздің нәтижеңіз", rRecsH:"Неден бастау керек: 3 нүкте",
     ctaL:"Келесі қадам", ctaH:"Осы нүктелерді бизнесіңізде талдаймыз — тегін",
     ctaS:"45 минут. Сатылыммен емес, түсінікті жоспармен кетесіз.",
-    wa:"WhatsApp арқылы талдау алу →", restart:"Қайта өту" },
+    wa:"WhatsApp арқылы талдау алу →", restart:"Қайта өту",
+    money:x=>`Сіздің айналымыңызда көрінбейтін <b>әрбір 5% маржа</b> — айына <b>≈ ${x} ₸</b> касса жанынан өтіп кетеді.` },
   en:{ backSite:"← To site", step:(a,b)=>`Step ${a} of ${b}`, done:"Done",
     iLabel:"Financial pulse", iH1:"Is your business <em>financially</em> healthy?",
     iLead:"10 questions in 5 minutes. At the end — an honest score from 0 to 100 and 3 spots where you're losing or not seeing money right now.",
@@ -177,7 +182,8 @@ const T = {
     rLabel:"Your result", rRecsH:"3 places to start",
     ctaL:"Next step", ctaH:"We'll break these points down on your business — free",
     ctaS:"45 minutes. You leave with a clear plan, not a sales pitch.",
-    wa:"Get your breakdown on WhatsApp →", restart:"Retake" }
+    wa:"Get your breakdown on WhatsApp →", restart:"Retake",
+    money:x=>`At your turnover, every <b>5% of margin</b> you don't see is <b>≈ ${x} ₸ a month</b> slipping past you.` }
 };
 
 const dims = {
@@ -358,6 +364,17 @@ function renderResult(r){
   let cur=0;const step=Math.max(1,Math.round(r.overall/30));
   const tick=setInterval(()=>{cur+=step;if(cur>=r.overall){cur=r.overall;clearInterval(tick);}$('scoreNum').textContent=cur;},28);
   $('scoreNum').style.color=colorFor(r.overall);
+
+  // «Деньги на кону»: 5% маржи от середины диапазона оборота — показываем, если оборот указан и есть слабые зоны
+  const turnoverMid=[2000000,6000000,18000000,40000000];
+  const ti=ctxAns.turnover;
+  if(ti!=null && r.overall<71){
+    const lever=Math.round(turnoverMid[ti]*0.05);
+    $('moneyLine').innerHTML=t.money(lever.toLocaleString('ru-RU'));
+    $('moneyLine').style.display='block';
+  } else {
+    $('moneyLine').style.display='none';
+  }
 
   $('bars').innerHTML=dims[lang].map((nm,d)=>{
     const v=r.dimScores[d];
