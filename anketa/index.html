@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Мини-анкета — ALTO Finance</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FDFCF9; --cream:#F5F0E8; --cream3:#E8E2D5;
+    --ink:#1C1917; --ink2:#44403C; --ink3:#78716C; --ink4:#A8A29E;
+    --red:#C0392B; --red2:#991B1B; --red-soft:#FAF0EE;
+    --border:#D6CFC4; --green:#16613A;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+  .wrap{width:100%;max-width:640px;margin:0 auto;padding:24px 20px 56px}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:26px}
+  .logo{font-family:'Playfair Display',serif;font-weight:700;font-size:20px;letter-spacing:-.5px;color:var(--ink);text-decoration:none}
+  .logo span{color:var(--red)}
+  .lang{display:flex;gap:2px}
+  .lang button{background:none;border:none;font-family:inherit;font-size:12px;color:var(--ink3);cursor:pointer;padding:3px 6px;font-weight:500}
+  .lang button.on{color:var(--red)}
+  .label{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--red);font-weight:500;margin-bottom:14px}
+  h1{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(28px,7vw,40px);line-height:1.12;letter-spacing:-1px;margin-bottom:12px}
+  h1 em{font-style:italic;color:var(--red)}
+  .lead{font-size:16px;font-weight:300;color:var(--ink2);margin-bottom:30px}
+  .q{margin-bottom:30px}
+  .q-num{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:6px}
+  .q-text{font-family:'Playfair Display',serif;font-size:clamp(20px,5vw,25px);line-height:1.25;margin-bottom:6px}
+  .q-hint{font-size:12px;color:var(--ink3);margin-bottom:12px}
+  .options{display:flex;flex-direction:column;gap:9px}
+  .opt{text-align:left;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:15px 17px;font-family:inherit;font-size:15px;color:var(--ink);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:12px;line-height:1.4;min-height:50px}
+  .opt:hover{border-color:var(--red)}
+  .opt .dot{flex:0 0 18px;width:18px;height:18px;border:2px solid var(--border);transition:all .15s}
+  .opt.single .dot{border-radius:50%}
+  .opt.multi .dot{border-radius:5px}
+  .opt.sel{border-color:var(--red);background:var(--red-soft)}
+  .opt.sel .dot{border-color:var(--red);background:var(--red);box-shadow:inset 0 0 0 3px var(--red-soft)}
+  .field{width:100%;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:15px 17px;font-family:inherit;font-size:16px;color:var(--ink)}
+  .field:focus{outline:none;border-color:var(--red)}
+  .btn{display:flex;width:100%;align-items:center;justify-content:center;background:var(--red);color:var(--white);border:none;padding:17px 30px;font-family:inherit;font-size:16px;font-weight:500;border-radius:10px;cursor:pointer;margin-top:8px}
+  .btn:hover{background:var(--red2)}
+  .btn:disabled{opacity:.55;cursor:default}
+  .err{color:var(--red2);font-size:13px;margin-top:12px;display:none;text-align:center}
+  .trust{font-size:12px;color:var(--ink3);margin-top:16px;text-align:center}
+  .done{display:none;text-align:center;padding-top:40px}
+  .done .tick{width:56px;height:56px;border-radius:50%;background:var(--green);margin:0 auto 22px;display:flex;align-items:center;justify-content:center}
+  .done .tick svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2.4}
+  .done p{font-weight:300;color:var(--ink2);max-width:420px;margin:0 auto}
+  .fallback{display:none;margin-top:14px;text-align:center}
+  .fallback a{color:var(--red);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a href="../" class="logo">ALTO<span>.</span></a>
+    <div class="lang" id="lang">
+      <button data-l="ru" class="on" onclick="setLang('ru')">RU</button>
+      <button data-l="kz" onclick="setLang('kz')">KZ</button>
+    </div>
+  </div>
+
+  <form id="form" novalidate>
+    <div class="label" id="tLabel"></div>
+    <h1 id="tH1"></h1>
+    <p class="lead" id="tLead"></p>
+    <div id="qs"></div>
+
+    <div class="q">
+      <div class="q-num" id="nameNum"></div>
+      <div class="q-text" id="nameQ"></div>
+      <input class="field" id="name" type="text" autocomplete="name" maxlength="80">
+    </div>
+
+    <button type="submit" class="btn" id="send"></button>
+    <div class="err" id="err"></div>
+    <div class="fallback" id="fb"><a id="fbLink" href="#" target="_blank" rel="noopener"></a></div>
+    <div class="trust" id="trust"></div>
+  </form>
+
+  <div class="done" id="done">
+    <div class="tick"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div>
+    <h1 id="dH1"></h1>
+    <p id="dText"></p>
+  </div>
+</div>
+
+<script>
+// Приёмник ответов: бесплатная форма Formspree (ответ приходит письмом на почту ALTO).
+// Пока пусто — отправка уходит в запасной канал (WhatsApp с готовым текстом).
+const FORM_URL = "https://formspree.io/f/xdekqrll";
+const WA = "77070385020";
+
+const Q = [
+  { id:"sales", multi:true,
+    ru:{t:"Кому продаёте?", h:"Можно выбрать несколько", o:["Розница (свой магазин, точка)","Кафе, магазины (опт)","Заказные торты и десерты","Онлайн (Kaspi, Instagram, доставка)"]},
+    kz:{t:"Кімге сатасыз?", h:"Бірнешеуін таңдауға болады", o:["Бөлшек сауда (өз дүкеніңіз, нүктеңіз)","Кафе, дүкендер (көтерме)","Тапсырыс торттары мен десерттер","Онлайн (Kaspi, Instagram, жеткізу)"]}},
+  { id:"books", multi:false,
+    ru:{t:"Где ведёте учёт?", h:"", o:["В тетради","В Excel","В 1С или другой программе","Нигде не веду"]},
+    kz:{t:"Есепті қайда жүргізесіз?", h:"", o:["Дәптерде","Excel-де","1С-те немесе басқа бағдарламада","Жүргізбеймін"]}},
+  { id:"profit", multi:false,
+    ru:{t:"Знаете ли прибыль за прошлый месяц?", h:"", o:["Знаю точно","Знаю примерно","Не знаю"]},
+    kz:{t:"Өткен айдағы пайданы білесіз бе?", h:"", o:["Дәл білемін","Шамамен білемін","Білмеймін"]}},
+  { id:"pain", multi:true,
+    ru:{t:"Что беспокоит больше всего?", h:"Можно выбрать до двух", max:2, o:["Не понимаю, сколько реально зарабатываю","Не знаю себестоимость изделий и какие цены ставить","Деньги заканчиваются раньше времени","Списания и расход сырья","Налоги и отчётность"]},
+    kz:{t:"Ең көп алаңдататыны не?", h:"Екіге дейін таңдауға болады", max:2, o:["Шын мәнінде қанша табатынымды түсінбеймін","Өнімнің өзіндік құнын және қандай баға қою керегін білмеймін","Ақша мерзімінен бұрын таусылады","Шығын мен шикізат жұмсалуы","Салық және есептілік"]}},
+  { id:"want", multi:false,
+    ru:{t:"Что хотели бы получить?", h:"", o:["Разовый разбор","Регулярный учёт и отчёты каждый месяц","Только себестоимость и цены","Пока не знаю, хочу посоветоваться"]},
+    kz:{t:"Не алғыңыз келеді?", h:"", o:["Бір реттік талдау","Әр ай сайын тұрақты есеп","Тек өзіндік құн мен бағалар","Әзірше білмеймін, кеңескім келеді"]}}
+];
+
+const T = {
+  ru:{label:"Мини-анкета", h1:"Пять быстрых <em>отметок</em>", lead:"Чтобы разбор был по делу, а не вообще. Отметьте варианты, это займёт около минуты.",
+      num:"Вопрос", nameNum:"Вопрос 6 · по желанию", nameQ:"Как к Вам обращаться?", namePh:"Имя", send:"Отправить", sending:"Отправляем…",
+      err:"Отметьте, пожалуйста, ответ в каждом вопросе. Пропущено: ", errNet:"Не удалось отправить. Нажмите ссылку ниже, и ответы уйдут в WhatsApp.",
+      fb:"Отправить ответы в WhatsApp →", trust:"Ответы видит только команда ALTO Finance. Мы не передаём их третьим лицам.",
+      dH1:"Спасибо!", dText:"Ответы получены. Мы свяжемся с Вами в WhatsApp, чтобы согласовать время разбора.", waText:"Ответы анкеты ALTO Finance"},
+  kz:{label:"Мини-сауалнама", h1:"Бес жылдам <em>белгі</em>", lead:"Талдау жалпы емес, нақты болуы үшін. Нұсқаларды белгілеңіз, шамамен бір минут алады.",
+      num:"Сұрақ", nameNum:"Сұрақ 6 · қалауыңыз бойынша", nameQ:"Сізді қалай атаймыз?", namePh:"Аты", send:"Жіберу", sending:"Жіберіліп жатыр…",
+      err:"Әр сұраққа жауап белгілеңіз. Өткізіп алынған: ", errNet:"Жіберу мүмкін болмады. Төмендегі сілтемені басыңыз, жауаптар WhatsApp арқылы кетеді.",
+      fb:"Жауаптарды WhatsApp-қа жіберу →", trust:"Жауаптарды тек ALTO Finance командасы көреді. Үшінші тұлғаларға бермейміз.",
+      dH1:"Рахмет!", dText:"Жауаптар қабылданды. Талдау уақытын келісу үшін WhatsApp арқылы хабарласамыз.", waText:"ALTO Finance сауалнама жауаптары"}
+};
+
+let lang = (new URLSearchParams(location.search).get('lang') === 'kz') ? 'kz' : 'ru';
+const sel = {}; // id -> Set(индексы)
+Q.forEach(q => sel[q.id] = new Set());
+const $ = id => document.getElementById(id);
+const src = (new URLSearchParams(location.search).get('src') || '').slice(0,60);
+
+function render(){
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  $('tLabel').textContent = t.label; $('tH1').innerHTML = t.h1; $('tLead').textContent = t.lead;
+  $('nameNum').textContent = t.nameNum; $('nameQ').textContent = t.nameQ; $('name').placeholder = t.namePh;
+  $('send').textContent = t.send; $('trust').textContent = t.trust; $('fbLink').textContent = t.fb;
+  $('dH1').textContent = t.dH1; $('dText').textContent = t.dText;
+  document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.l === lang));
+  $('qs').innerHTML = Q.map((q,i) => {
+    const d = q[lang];
+    return `<div class="q" data-q="${q.id}"><div class="q-num">${t.num} ${i+1}</div><div class="q-text">${d.t}</div>` +
+      (d.h ? `<div class="q-hint">${d.h}</div>` : '') +
+      `<div class="options">` + d.o.map((o,j) =>
+        `<button type="button" class="opt ${q.multi?'multi':'single'}${sel[q.id].has(j)?' sel':''}" data-q="${q.id}" data-i="${j}"><span class="dot"></span><span>${o}</span></button>`
+      ).join('') + `</div></div>`;
+  }).join('');
+}
+
+function setLang(l){ lang = l; $('err').style.display='none'; render(); }
+
+$('qs').addEventListener('click', e => {
+  const b = e.target.closest('.opt'); if(!b) return;
+  const q = Q.find(x => x.id === b.dataset.q), i = +b.dataset.i, s = sel[q.id];
+  if(!q.multi){ s.clear(); s.add(i); }
+  else if(s.has(i)) s.delete(i);
+  else { const mx = q[lang].max; if(mx && s.size >= mx) s.delete([...s][0]); s.add(i); }
+  b.closest('.options').querySelectorAll('.opt').forEach(x => x.classList.toggle('sel', s.has(+x.dataset.i)));
+});
+
+function collect(){
+  const out = {};
+  Q.forEach(q => { out[q.id] = [...sel[q.id]].sort().map(j => q.ru.o[j]).join('; '); }); // в письмо всегда на русском
+  return out;
+}
+
+$('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const t = T[lang], err = $('err');
+  const missing = Q.map((q,i) => sel[q.id].size ? null : (i+1)).filter(Boolean);
+  if(missing.length){ err.textContent = t.err + missing.join(', '); err.style.display='block'; return; }
+  err.style.display = 'none';
+  const a = collect(), name = $('name').value.trim();
+  const payload = { _subject: 'Анкета ALTO Finance' + (name ? ' — ' + name : ''), name, source: src, lang,
+    'Кому продаёт': a.sales, 'Где учёт': a.books, 'Знает прибыль': a.profit, 'Что беспокоит': a.pain, 'Что хочет': a.want };
+  const waLines = ['Ответы анкеты ALTO Finance' + (name ? ' (' + name + ')' : '') + ':',
+    '1. ' + a.sales, '2. ' + a.books, '3. ' + a.profit, '4. ' + a.pain, '5. ' + a.want].join('\n');
+  $('fbLink').href = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(waLines);
+  $('send').disabled = true; $('send').textContent = t.sending;
+  try{
+    if(!FORM_URL) throw new Error('no-endpoint');
+    const r = await fetch(FORM_URL, {method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body: JSON.stringify(payload)});
+    if(!r.ok) throw new Error('http ' + r.status);
+    $('form').style.display = 'none'; $('done').style.display = 'block'; window.scrollTo(0,0);
+  }catch(_){
+    err.textContent = t.errNet; err.style.display = 'block'; $('fb').style.display = 'block';
+    $('send').disabled = false; $('send').textContent = t.send;
+  }
+});
+
+render();
+</script>
+</body>
+</html>
