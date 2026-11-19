@@ -173,7 +173,8 @@ const D=[
   {t:o('Можно ли дать нам доступ к iiko только на чтение?'),k:'one',a:r('Да','Нужно согласовать','Нет')},
   {t:o('Какие отчёты собственник получает регулярно?'),k:'multi',a:r('Выручка за день','Прибыль за месяц','Остатки денег','Регулярных отчётов нет')}]},
  {n:o('Где хранятся деньги'),h:o('Перечислите все счета, Kaspi, кассы и карты, через которые проходят деньги бизнеса, в том числе личные.'),why:1,q:[
-  {t:o('Счета и кассы'),k:'rows',item:o('Счёт или касса'),seed:[{}],fields:[
+  {t:o('Сколько у компании счетов и касс'),k:'grid',rows:r('Расчётные счета в банках','Kaspi Pay','Кассы на точках','Сейфы','Личные карты, через которые идут деньги бизнеса'),fields:[{f:'n',t:o('Количество'),k:'num'}]},
+  {t:o('Подробно по каждому'),k:'rows',item:o('Счёт или касса'),seed:[{}],fields:[
    {f:'type',t:o('Тип'),k:'one',a:r('Расчётный счёт','Kaspi Pay','Касса точки','Сейф','Личная карта / Kaspi Gold')},
    {f:'bank',t:o('Банк или место'),k:'txt',ph:o('Например: Halyk Bank / касса на Карменова')},
    {f:'owner',t:o('Чей'),k:'txt',ph:o('Юрлицо или ФИО')},
@@ -336,7 +337,7 @@ const KZ_OFF=true;
 let L='ru',view={v:'home'};
 const t=(p,v)=>{let s=p[L==='ru'?0:1];if(v)for(const k in v)s=s.replace('{'+k+'}',v[k]);return s};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const KEY='bayrim-diag-v3';
+const KEY='bayrim-diag-v4';
 const REG={};
 function allQ(d,fn){d.steps.forEach((s,si)=>s.q.forEach((q,qi)=>fn(si+'-'+qi,q)))}
 function blank(){const s={};D.forEach(d=>{const st={who:'',a:{},sums:{},files:{},rows:{},step:0,sent:false};allQ(d,(k,q)=>{if(q.k==='rows')st.rows[k]=JSON.parse(JSON.stringify(q.seed||[{}]));if(q.k==='grid')st.rows[k]={}});s[d.id]=st});return s}
