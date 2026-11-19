@@ -118,7 +118,7 @@ textarea.inp{min-height:76px;resize:vertical}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap"><h1 id="ttl"></h1><div class="lg"><button id="l-ru" data-l="ru" class="on">RU</button><button id="l-kz" data-l="kz">KZ</button></div></div></header>
+<header class="top"><div class="wrap"><h1 id="ttl"></h1><div class="lg" hidden><button id="l-ru" data-l="ru" class="on">RU</button><button id="l-kz" data-l="kz">KZ</button></div></div></header>
 <main class="wrap" id="app"></main>
 <div class="foot" id="foot" hidden><div class="wrap" id="footIn"></div></div>
 <script>
@@ -312,7 +312,8 @@ let S={};
 function blank(){const s={};D.forEach(d=>s[d.id]={who:'',a:{},sums:{},files:{},step:0,sent:false,pts:d.id==='pts'?PTS0.map(a=>({addr:a})):undefined});return s}
 try{S=JSON.parse(localStorage.getItem(KEY))||blank()}catch(e){S=blank()}
 D.forEach(d=>{if(!S[d.id])S[d.id]=blank()[d.id]});
-try{L=localStorage.getItem(KEY+'-l')||'ru'}catch(e){}
+/* KZ временно отключён (19.11.2026): включить — убрать KZ_OFF */ const KZ_OFF=true;
+if(!KZ_OFF){try{L=localStorage.getItem(KEY+'-l')||'ru'}catch(e){}}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const app=document.getElementById('app'),foot=document.getElementById('foot'),footIn=document.getElementById('footIn');
 const REG={};
