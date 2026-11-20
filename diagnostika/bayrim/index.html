@@ -136,6 +136,9 @@ const r=(...xs)=>xs.map(x=>o(x));
 const kq=s=>({t:o(s),k:'txt'});
 const WHY=o('Нам важны все расходы, включая оплаченные наличными или с личных карт. Без них себестоимость и прибыль будут посчитаны неверно. Информация конфиденциальна и третьим лицам не передаётся.');
 const FREQ=r('Регулярно','Иногда','Нет');
+const MADE=i=>({q:'prod',row:i,f:'src',on:[0,2]});              // позицию цех производит сам (полностью или частично)
+const ANY_MADE={any:[0,1,2,3,4,5,6,7].map(MADE)};
+const IIKO={q:'sys',on:[0]};
 
 const D=[
 {id:'own',n:o('Собственник'),steps:[
@@ -171,12 +174,12 @@ const D=[
 
 {id:'acc',n:o('Бухгалтерия и финансы'),steps:[
  {n:o('Учёт'),q:[
-  {t:o('В каких системах ведётся учёт?'),k:'multi',a:r('iiko','1С','Excel / Google Таблицы','Бумажный журнал'),
-   s:[{on:[1],q:{t:o('Как данные iiko попадают в 1С?'),k:'one',a:r('Автоматическая выгрузка','Вручную','Не попадают')}}]},
+  {id:'sys',t:o('В каких системах ведётся учёт?'),k:'multi',a:r('iiko','1С','Excel / Google Таблицы','Бумажный журнал')},
+  {t:o('Как данные iiko попадают в 1С?'),k:'one',a:r('Автоматическая выгрузка','Вручную','Не попадают'),when:{all:[IIKO,{q:'sys',on:[1]}]}},
   {t:o('Кто ведёт бухгалтерию?'),k:'one',a:r('Штатный бухгалтер','Аутсорсинг','Собственник')},
-  {t:o('С какого месяца есть данные в iiko?'),k:'txt',short:1,ph:o('Например: январь 2025')},
-  {t:o('Подключён iikoCloud (доступ по API)?'),k:'one',a:r('Да','Нет')},
-  {t:o('Можно ли дать нам доступ к iiko только на чтение?'),k:'one',a:r('Да','Нужно согласовать','Нет')},
+  {t:o('С какого месяца есть данные в iiko?'),k:'txt',short:1,ph:o('Например: январь 2025'),when:IIKO},
+  {t:o('Подключён iikoCloud (доступ по API)?'),k:'one',a:r('Да','Нет'),when:IIKO},
+  {t:o('Можно ли дать нам доступ к iiko только на чтение?'),k:'one',a:r('Да','Нужно согласовать','Нет'),when:IIKO},
   {t:o('Какие отчёты собственник получает регулярно?'),k:'multi',a:r('Выручка за день','Прибыль за месяц','Остатки денег','Регулярных отчётов нет')}]},
  {n:o('Где хранятся деньги'),h:o('Перечислите все счета, Kaspi, кассы и карты, через которые проходят деньги бизнеса, в том числе личные.'),why:1,q:[
   {t:o('Сколько у компании счетов и касс'),k:'grid',rows:r('Расчётные счета в банках','Kaspi Pay','Кассы на точках','Сейфы','Личные карты, через которые идут деньги бизнеса'),fields:[{f:'n',t:o('Количество'),k:'num'}]},
@@ -226,27 +229,31 @@ const D=[
   {t:o('Приход оформляется в iiko?'),k:'one',a:r('Каждая поставка','Частично','Нет'),f:o('Отчёт о приходах и списаниях из iiko с января 2026')},
   {t:o('Инвентаризация'),k:'one',a:r('Еженедельно','Ежемесячно','Реже','Не проводится'),f:o('Акты инвентаризации: на начало 2026 года и последний')},
   {t:o('Списания: порча, брак, просрочка'),k:'one',a:r('Оформляются в iiko','Записываются вручную','Не оформляются')},
+  {t:o('Бывают возвраты поставщикам: брак, просрочка?'),k:'one',a:FREQ,
+   s:[{on:[0,1],q:{t:o('Как оформляется возврат?'),k:'one',a:r('Возвратной накладной в iiko','Бумажным актом','Без документов')}}]},
   kq('Где теряются продукты и деньги: при приёмке, хранении, списании?')]}]},
 
 {id:'shop',n:o('Цех'),steps:[
  {n:o('Продукция'),h:o('По каждой позиции: производите сами или покупаете готовой, и есть ли техкарта в iiko.'),q:[
-  {t:o('Что производит цех'),k:'grid',rows:r('Мясо для донера (вертел)','Лаваш','Булки для бургеров','Котлеты','Соусы','Крылышки (маринад)','Тесто для пиццы','Фри и другая заморозка'),fields:[
+  {id:'prod',t:o('Что производит цех'),k:'grid',rows:r('Мясо для донера (вертел)','Лаваш','Булки для бургеров','Котлеты','Соусы','Крылышки (маринад)','Тесто для пиццы','Фри и другая заморозка'),fields:[
    {f:'src',t:o('Источник'),k:'one',a:r('Производим сами','Покупаем готовым','Частично своё')},
    {f:'tk',t:o('Техкарта в iiko'),k:'one',a:r('Есть','Нет')}]},
   {t:o('Что ещё производите сами?'),k:'txt',short:1}]},
  {n:o('Объём производства'),h:o('Сколько цех производит в обычный день. Если позицию не производите — пропустите.'),q:[
-  {t:o('Объём в день'),k:'grid',rows:r('Мясо для донера, кг','Лаваш, шт','Булки, шт','Котлеты, шт','Соусы, кг','Крылышки, кг'),fields:[
+  {t:o('Объём в день'),k:'grid',rows:r('Мясо для донера, кг','Лаваш, шт','Булки, шт','Котлеты, шт','Соусы, кг','Крылышки, кг'),rowWhen:[0,1,2,3,4,5].map(MADE),fields:[
    {f:'qty',t:o('В обычный день'),k:'num'}]}]},
- {n:o('Техкарты и потери'),h:o('Как учитываются потери мяса при разморозке и жарке и насколько актуальны техкарты.'),q:[
-  {t:o('Мясо для донера поступает'),k:'one',a:r('Охлаждённое','Замороженное','И то и другое')},
-  {t:o('Заложены ли в техкартах потери при разморозке и жарке?'),k:'one',a:r('Да, в каждой техкарте','Частично','Нет')},
+ {n:o('Техкарты и потери'),h:o('Насколько актуальны техкарты и учтены ли в них потери.'),q:[
+  {t:o('Мясо для вертелов поступает в цех'),k:'one',a:r('Охлаждённое','Замороженное','И то и другое'),when:MADE(0)},
+  {t:o('Сколько веса мясо теряет в цеху при разморозке и разделке, примерно?'),h:o('Если измеряли'),k:'num',u:'%',when:MADE(0)},
+  {t:o('Заложены ли в техкартах потери: разморозка, разделка, жарка?'),k:'one',a:r('Да, в каждой техкарте','Частично','Нет')},
   {t:o('Когда последний раз обновляли техкарты?'),k:'one',a:r('В этом году','1–2 года назад','Давно или не обновляли')},
   {t:o('Кто обновляет техкарты?'),k:'one',a:r('Заведующий цехом','Технолог','Собственник','Никто')},
-  {t:o('Делали контрольную отработку: взвешивали мясо до и после жарки?'),k:'one',a:r('Регулярно','Один раз','Нет'),
-   s:[{on:[0,1],q:{t:o('Сколько процентов веса теряет мясо на вертеле?'),k:'num',u:'%'}}]}]},
+  {t:o('Делали контрольную проработку блюд: взвешивали сырьё до и после приготовления?'),k:'one',a:r('Регулярно','Один раз','Нет')}]},
  {n:o('Работа цеха'),q:[
-  {t:o('Как продукция отгружается на точки?'),k:'one',a:r('Перемещение в iiko','Бумажная накладная','Без оформления')},
-  {t:o('Цех продаёт продукцию сторонним покупателям?'),k:'one',a:r('Да','Нет'),
+  {t:o('Как продукция отгружается на точки?'),k:'one',a:r('Перемещение в iiko','Бумажная накладная','Без оформления'),when:ANY_MADE},
+  {t:o('Цех принимает возвраты с точек: непроданное, брак?'),k:'one',a:r('Да, перерабатываем','Да, списываем','Нет'),when:ANY_MADE,
+   s:[{on:[0,1],q:{t:o('Как оформляется возврат?'),k:'one',a:r('Возвратом в iiko','Бумажным актом','Без документов')}}]},
+  {t:o('Цех продаёт продукцию сторонним покупателям?'),k:'one',a:r('Да','Нет'),when:ANY_MADE,
    s:[{on:[0],q:{t:o('Кому и объём в месяц'),k:'txt',short:1}}]},
   {t:o('Площадь цеха'),k:'num',u:'м²'},
   {t:o('Помещение цеха'),k:'one',a:r('Аренда','Собственное'),
@@ -282,31 +289,35 @@ const D=[
    s:[{on:[0,1],q:{t:o('На чей номер?'),k:'one',a:r('Собственника','Управляющего','Сотрудника')}},
       {on:[0,1],q:{t:o('Отражаются в iiko?'),k:'one',a:r('Всегда','Не всегда','Нет')}}]}]},
  {n:o('Потери и порча'),q:[
-  {t:o('Взвешиваете вертел до и после смены?'),k:'one',a:r('Каждую смену','Иногда','Нет')},
-  {t:o('Что делаете с остатком мяса на вертеле?'),k:'one',a:r('Используем на следующий день','Отдаём персоналу','Списываем','По-разному')},
+  {id:'spit',t:o('Откуда вертел приходит на точку?'),k:'one',a:r('Из нашего цеха','Готовым от поставщика','И так и так')},
+  {t:o('В каком виде приходит вертел от поставщика?'),k:'one',a:r('Охлаждённый','Замороженный','По-разному'),when:{q:'spit',on:[1,2]}},
+  {t:o('Взвешиваете вертел до и после жарки?'),k:'one',a:r('Каждую смену','Иногда','Нет'),
+   s:[{on:[0,1],q:{t:o('Сколько процентов веса теряет вертел при жарке?'),k:'num',u:'%'}}]},
+  {t:o('Что делаете с остатком мяса на вертеле?'),k:'one',a:[o('Используем на следующий день'),o('Отдаём персоналу'),o('Списываем'),{l:o('Возвращаем в цех'),w:{q:'spit',on:[0,2]}}]},
   {t:o('Что есть на линии для порций?'),k:'multi',a:r('Весы для мяса','Дозаторы соусов','Мерные ложки и черпаки','Кладём на глаз')},
-  {t:o('Как фиксируется порча: засохший лаваш, просрочка, брак?'),k:'one',a:r('Актом списания в iiko','В тетради','Не фиксируется')},
+  {t:o('Что делаете с испорченной и непроданной продукцией: засохший лаваш, просрочка, брак?'),k:'multi',a:r('Списываем на точке','Возвращаем в цех','Возвращаем поставщику','Отдаём персоналу'),
+   s:[{on:[0],q:{t:o('Как оформляется списание?'),k:'one',a:r('Актом списания в iiko','В тетради','Не оформляется')}},
+      {on:[1,2],q:{t:o('Как оформляется возврат?'),k:'one',a:r('Накладной в iiko','Бумажным актом','Без документов')}}]},
   {t:o('Знает ли управляющий, сколько порчи у точки в месяц?'),k:'one',a:r('Да','Нет'),
    s:[{on:[0],q:{t:o('Сколько примерно в месяц'),k:'num',u:'₸'}}]},
-  {t:o('Остатки готовой продукции в конце дня'),k:'one',a:r('Списываются','Продаются на следующий день','Отдаются персоналу')},
   {t:o('Продажи по позициям из iiko с января 2026, по месяцам'),k:'file'},
   kq('Что мешает работе точки: очереди, нехватка людей, перебои с продукцией?')]}]},
 
 {id:'sales',n:o('Продажи и доставка'),steps:[
  {n:o('Каналы продаж'),h:o('По каждому каналу: доля в продажах, как платят клиенты и отражается ли в iiko. Если канала нет — пропустите.'),q:[
-  {t:o('Каналы'),k:'grid',rows:r('Зал и вынос','Своя доставка (WhatsApp, телефон)','Wolt','Яндекс Еда','Glovo','Продажа с цеха на сторону'),fields:[
+  {id:'ch',t:o('Каналы'),k:'grid',rows:r('Зал и вынос','Своя доставка (WhatsApp, телефон)','Wolt','Яндекс Еда','Glovo','Продажа с цеха на сторону'),fields:[
    {f:'share',t:o('Доля в продажах'),k:'num',u:'%'},
    {f:'pay',t:o('Как платят'),k:'multi',a:r('Наличные','Kaspi QR','Карта','Перевод на номер','Через сервис')},
    {f:'iiko',t:o('Отражается в iiko'),k:'one',a:r('Да','Частично','Нет')}]}]},
  {n:o('Сервисы доставки'),h:o('Если с сервисом не работаете — пропустите строку.'),q:[
-  {t:o('Условия сервисов'),k:'grid',rows:r('Wolt','Яндекс Еда','Glovo'),fields:[
+  {t:o('Условия сервисов'),k:'grid',rows:r('Wolt','Яндекс Еда','Glovo'),rowWhen:[{q:'ch',row:2},{q:'ch',row:3},{q:'ch',row:4}],fields:[
    {f:'com',t:o('Комиссия'),k:'num',u:'%'},
    {f:'pay',t:o('Как часто перечисляет деньги'),k:'one',a:r('Ежедневно','Еженедельно','Реже')}]},
-  {t:o('Отчёты сервисов доставки с января 2026'),k:'file'}]},
+  {t:o('Отчёты сервисов доставки с января 2026'),k:'file',when:{any:[{q:'ch',row:2},{q:'ch',row:3},{q:'ch',row:4}]}}]},
  {n:o('Своя доставка'),q:[
-  {t:o('Кто доставляет заказы?'),k:'one',a:r('Штатные курьеры','Такси','Яндекс Доставка'),
+  {t:o('Кто доставляет заказы?'),k:'one',a:r('Штатные курьеры','Такси','Яндекс Доставка'),when:{q:'ch',row:1},
    s:[{on:[0],q:{t:o('Сколько курьеров и как им платите?'),k:'txt',short:1}}]},
-  {t:o('Доставка для клиента'),k:'one',a:r('Платная','Бесплатно от суммы заказа','Бесплатно')}]},
+  {t:o('Доставка для клиента'),k:'one',a:r('Платная','Бесплатно от суммы заказа','Бесплатно'),when:{q:'ch',row:1}}]},
  {n:o('Маркетинг'),q:[
   {t:o('Расходы на маркетинг в месяц'),k:'grid',rows:r('Таргетированная реклама','Блогеры','Агентство / SMM','Прочее'),fields:[
    {f:'sum',t:o('Сумма в месяц'),k:'num',u:'₸'}]},
@@ -356,7 +367,7 @@ const KZ_OFF=true;
 let L='ru',view={v:'home'};
 const t=(p,v)=>{let s=p[L==='ru'?0:1];if(v)for(const k in v)s=s.replace('{'+k+'}',v[k]);return s};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const KEY='bayrim-diag-v6';
+const KEY='bayrim-diag-v7';
 const REG={};
 function allQ(d,fn){d.steps.forEach((s,si)=>s.q.forEach((q,qi)=>fn(si+'-'+qi,q)))}
 function blank(){const s={};D.forEach(d=>{const st={who:'',a:{},sums:{},files:{},rows:{},step:0,sent:false};allQ(d,(k,q)=>{if(q.k==='rows')st.rows[k]=JSON.parse(JSON.stringify(q.seed||[{}]));if(q.k==='grid')st.rows[k]={}});s[d.id]=st});return s}
@@ -367,14 +378,28 @@ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const app=document.getElementById('app'),foot=document.getElementById('foot'),footIn=document.getElementById('footIn');
 const filled=v=>v!==undefined&&v!==null&&v!==''&&!(Array.isArray(v)&&!v.length);
 const rowFilled=(row,fields)=>fields.some(f=>f.k!=='file'&&filled(row&&row[f.f]));
-function isAns(st,key,q){
+const show=(v,on)=>Array.isArray(v)?v.some(x=>on.includes(x)):on.includes(v);
+D.forEach(d=>{d.ids={};d.qk={};allQ(d,(k,q)=>{d.qk[k]=q;if(q.id)d.ids[q.id]=k})});
+const DD=id=>D.find(x=>x.id===id);
+/* условие показа: {q:id,on:[..]} — ответ на вопрос; {q:id,row:i[,f,on]} — строка таблицы заполнена / поле строки; {any:[..]}, {all:[..]} */
+function cond(d,st,w){if(!w)return true;
+ if(w.any)return w.any.some(x=>cond(d,st,x));if(w.all)return w.all.every(x=>cond(d,st,x));
+ const key=d.ids[w.q],q=d.qk[key];if(!q)return true;
+ if(w.row!==undefined){const row=(st.rows[key]||{})[w.row]||{};if(w.f){const v=row[w.f];return filled(v)&&(!w.on||show(v,w.on))}return rowFilled(row,q.fields)}
+ const v=st.a[key];return filled(v)&&v!=='idk'&&(!w.on||show(v,w.on))}
+const lab=x=>Array.isArray(x)?x:x.l;
+const optOk=(d,st,x)=>Array.isArray(x)||cond(d,st,x.w);
+const visRows=(d,st,q)=>q.rows.map((_,i)=>i).filter(i=>!q.rowWhen||!q.rowWhen[i]||cond(d,st,q.rowWhen[i]));
+const qVis=(d,st,q)=>cond(d,st,q.when)&&(q.k!=='grid'||visRows(d,st,q).length>0);
+const stepVis=(d,st,si)=>si===0||d.steps[si].q.some(q=>qVis(d,st,q));
+const visSteps=(d,st)=>d.steps.map((_,i)=>i).filter(i=>stepVis(d,st,i));
+function isAns(d,st,key,q){
  if(q.k==='rows')return(st.rows[key]||[]).some((r,i)=>q.fields.some(f=>f.k!=='file'&&filled(r[f.f])&&!(q.seed&&q.seed[i]&&q.seed[i][f.f]===r[f.f])));
- if(q.k==='grid')return Object.values(st.rows[key]||{}).some(r=>rowFilled(r,q.fields));
+ if(q.k==='grid')return visRows(d,st,q).some(i=>rowFilled((st.rows[key]||{})[i],q.fields));
  if(q.k==='file')return st.a[key]==='idk'||!!(st.files[key]&&st.files[key].length);
  return filled(st.a[key])}
-const mains=d=>{const r=[];allQ(d,(k,q)=>r.push([k,q]));return r};
-const doneN=d=>mains(d).filter(([k,q])=>isAns(S[d.id],k,q)).length;
-const show=(v,on)=>Array.isArray(v)?v.some(x=>on.includes(x)):on.includes(v);
+const mains=(d,st=S[d.id])=>{const r=[];visSteps(d,st).forEach(si=>d.steps[si].q.forEach((q,qi)=>{if(qVis(d,st,q))r.push([si+'-'+qi,q])}));return r};
+const doneN=d=>mains(d).filter(([k,q])=>isAns(d,S[d.id],k,q)).length;
 
 function home(){view={v:'home'};foot.hidden=true;
  let h=`<div class="demo">${t(U.demo)}</div><div class="hero"><h2>${t(U.h)}</h2><p>${t(U.lead)}</p></div>
@@ -384,8 +409,9 @@ function home(){view={v:'home'};foot.hidden=true;
  h+=`</div><div class="credit"><div class="partners"><div class="alto">A<b>L</b>TO<small>FINANCE</small></div><i class="sep"></i><div class="mm"><b>Мейирбек Мажитов</b><span>${t(U.cred)}</span></div></div><div class="lock">${t(U.priv)}</div></div>`;
  app.innerHTML=h;window.scrollTo(0,0)}
 
+let CD=null,CS=null;
 const idkBtn=(key,v,label)=>`<button type="button" class="opt idk${v==='idk'?' on':''}" data-key="${key}" data-j="idk">${t(label||U.idk)}</button>`;
-function optBtns(a,multi,v,attrs){return a.map((x,j)=>{const on=multi?(Array.isArray(v)&&v.includes(j)):v===j;return`<button type="button" class="opt${on?' on':''}" ${attrs} data-j="${j}">${t(x)}</button>`}).join('')}
+function optBtns(a,multi,v,attrs){return a.map((x,j)=>{if(!optOk(CD,CS,x))return'';const on=multi?(Array.isArray(v)&&v.includes(j)):v===j;return`<button type="button" class="opt${on?' on':''}" ${attrs} data-j="${j}">${t(lab(x))}</button>`}).join('')}
 function fileBox(fk,label,st){const names=st.files[fk];
  return `<label class="file${names&&names.length?' ok':''}"><input type="file" multiple accept="image/*,.pdf,.xls,.xlsx,.csv,.doc,.docx" data-file="${fk}" id="f-${fk.replace(/[^\w-]/g,'_')}"><span class="ic" aria-hidden="true">${names&&names.length?'✓':'＋'}</span><span><span class="ft">${names&&names.length?esc(names.join(', ')):t(U.att)+(label?': '+t(label):'')}</span><br><span class="fs">${t(U.attH)}</span></span></label>`}
 function qBody(q,key,st){REG[key]=q;const v=st.a[key];let h='';
@@ -409,37 +435,39 @@ function fieldsHTML(q,key,ri,row,st){let h='',half=[];
   const el=`<div class="fl"><span>${t(f.t)}</span>${c}</div>`;
   if(f.half)half.push(el);else{flush();h+=el}});
  flush();return h}
-function rowsHTML(q,key,st){REG[key]=q;let h='';
+function rowsHTML(d,q,key,st){REG[key]=q;let h='';
  if(q.k==='rows'){const rows=st.rows[key];
   rows.forEach((row,ri)=>{h+=`<div class="card rw"><div class="ph"><b>${t(q.item)} ${ri+1}</b>${rows.length>1?`<button type="button" class="del" data-rdel="${key}" data-ri="${ri}">${t(U.del)}</button>`:''}</div>${fieldsHTML(q,key,ri,row,st)}</div>`});
   h+=`<button type="button" class="add" data-radd="${key}">${t(U.add,{a:t(q.item).toLowerCase()})}</button>`}
  else if(q.fields.length===1&&(q.fields[0].k==='txt'||q.fields[0].k==='num')){const rows=st.rows[key],f=q.fields[0];
-  h+=`<div class="card"><div class="qt">${t(q.t)}</div><div class="crows"><div class="crow chd"><span></span><span>${t(f.t)}${f.u?', '+f.u:''}</span></div>`+q.rows.map((name,ri)=>{const v=(rows[ri]||{})[f.f],id=`r-${key}-${ri}-${f.f}`.replace(/[^\w-]/g,'_');
+  h+=`<div class="card"><div class="qt">${t(q.t)}</div><div class="crows"><div class="crow chd"><span></span><span>${t(f.t)}${f.u?', '+f.u:''}</span></div>`+visRows(d,st,q).map(ri=>{const name=q.rows[ri],v=(rows[ri]||{})[f.f],id=`r-${key}-${ri}-${f.f}`.replace(/[^\w-]/g,'_');
    return `<label class="crow"><span>${t(name)}</span><input class="inp rf" id="${id}" data-r="${key}" data-ri="${ri}" data-f="${f.f}"${f.k==='num'?' inputmode="decimal" placeholder="0"':''} value="${esc(v)}"></label>`}).join('')+`</div></div>`}
  else{const rows=st.rows[key];
-  q.rows.forEach((name,ri)=>{const row=rows[ri]||{};h+=`<div class="card rw${rowFilled(row,q.fields)?' has':''}"><div class="ph"><b>${t(name)}</b></div>${fieldsHTML(q,key,ri,row,st)}</div>`})}
+  visRows(d,st,q).forEach(ri=>{const name=q.rows[ri],row=rows[ri]||{};h+=`<div class="card rw${rowFilled(row,q.fields)?' has':''}"><div class="ph"><b>${t(name)}</b></div>${fieldsHTML(q,key,ri,row,st)}</div>`})}
  return h}
 
-function dept(id,keepScroll){const d=D.find(x=>x.id===id),st=S[id];view={v:'dep',id};
- const si=st.step,sp=d.steps[si],y=window.scrollY;
- let h=`<button type="button" class="back" id="back">${t(U.back)}</button><div class="dh"><span class="chip">${t(d.n)}</span><span class="stepn">${t(U.step,{a:si+1,b:d.steps.length})}</span></div><div class="dots">${d.steps.map((s,i)=>`<i class="${i<=si?'on':''}"></i>`).join('')}</div>
+function dept(id,keepScroll){const d=DD(id),st=S[id];view={v:'dep',id};CD=d;CS=st;
+ let vs=visSteps(d,st);if(!vs.includes(st.step))st.step=vs.filter(i=>i<st.step).pop()||0;
+ const si=st.step,sp=d.steps[si],y=window.scrollY,pos=vs.indexOf(si);
+ let h=`<button type="button" class="back" id="back">${t(U.back)}</button><div class="dh"><span class="chip">${t(d.n)}</span><span class="stepn">${t(U.step,{a:pos+1,b:vs.length})}</span></div><div class="dots">${vs.map((s,i)=>`<i class="${i<=pos?'on':''}"></i>`).join('')}</div>
  <div class="st"><h2>${t(sp.n)}</h2>${sp.h?`<p class="sh">${t(sp.h)}</p>`:''}</div>`;
  if(sp.why)h+=`<div class="why"><b>${t(U.why)}</b>${t(WHY)}</div>`;
  if(si===0)h+=`<div class="card" id="c-who"><div class="qt">${t(U.who)}</div><input class="inp" id="who" placeholder="${t(U.whoPh)}" value="${esc(st.who)}"><div class="err" hidden>${t(U.fillWho)}</div></div>`;
- const base=d.steps.slice(0,si).reduce((n,s)=>n+s.q.length,0),total=mains(d).length;
- sp.q.forEach((q,qi)=>{const key=si+'-'+qi;
-  if(q.k==='rows'||q.k==='grid'){h+=`<div id="c-${key}" class="blk">${rowsHTML(q,key,st)}<div class="err" hidden>${t(U.fillRows)}</div></div>`;return}
-  h+=`<div class="card" id="c-${key}"><div class="qn">${base+qi+1} / ${total}</div><div class="qt">${t(q.t)}</div>${qBody(q,key,st)}<div class="err" hidden>${t(U.fill)}</div></div>`});
+ const all=mains(d),total=all.length;let num=all.findIndex(([k])=>k.split('-')[0]==String(si));
+ sp.q.forEach((q,qi)=>{const key=si+'-'+qi;if(!qVis(d,st,q))return;num++;
+  if(q.k==='rows'||q.k==='grid'){h+=`<div id="c-${key}" class="blk">${rowsHTML(d,q,key,st)}<div class="err" hidden>${t(U.fillRows)}</div></div>`;return}
+  h+=`<div class="card" id="c-${key}"><div class="qn">${num} / ${total}</div><div class="qt">${t(q.t)}</div>${qBody(q,key,st)}<div class="err" hidden>${t(U.fill)}</div></div>`});
  app.innerHTML=h;
- footIn.innerHTML=`${si>0?`<button type="button" class="btn ghost" id="prev">${t(U.prev)}</button>`:''}<div class="pr"><span id="prT"></span><div class="bar"><i id="prB"></i></div></div><button type="button" class="btn" id="next">${si<d.steps.length-1?t(U.next):t(U.send)}</button>`;
+ const last=pos===vs.length-1;
+ footIn.innerHTML=`${pos>0?`<button type="button" class="btn ghost" id="prev">${t(U.prev)}</button>`:''}<div class="pr"><span id="prT"></span><div class="bar"><i id="prB"></i></div></div><button type="button" class="btn" id="next">${last?t(U.send):t(U.next)}</button>`;
  foot.hidden=false;prog();
  window.scrollTo(0,keepScroll?y:0);
  if(st._tried===si)validate(false)}
-function prog(){const d=D.find(x=>x.id===view.id),n=doneN(d),m=mains(d).length;document.getElementById('prT').textContent=t(U.ans,{a:n,b:m});document.getElementById('prB').style.width=n/m*100+'%'}
-function validate(scroll){const d=D.find(x=>x.id===view.id),st=S[d.id],si=st.step;let first=null;
- const mark=(c,bad)=>{c.classList.toggle('miss',bad);const e=c.querySelector(':scope>.err');if(e)e.hidden=!bad;if(bad&&!first)first=c};
+function prog(){const d=DD(view.id),n=doneN(d),m=mains(d).length;document.getElementById('prT').textContent=t(U.ans,{a:n,b:m});document.getElementById('prB').style.width=(m?n/m*100:0)+'%'}
+function validate(scroll){const d=DD(view.id),st=S[d.id],si=st.step;let first=null;
+ const mark=(c,bad)=>{if(!c)return;c.classList.toggle('miss',bad);const e=c.querySelector(':scope>.err');if(e)e.hidden=!bad;if(bad&&!first)first=c};
  if(si===0)mark(document.getElementById('c-who'),!st.who.trim());
- d.steps[si].q.forEach((q,qi)=>{const key=si+'-'+qi;mark(document.getElementById('c-'+key),!isAns(st,key,q))});
+ d.steps[si].q.forEach((q,qi)=>{if(!qVis(d,st,q))return;const key=si+'-'+qi;mark(document.getElementById('c-'+key),!isAns(d,st,key,q))});
  if(first&&scroll)first.scrollIntoView({behavior:'smooth',block:'center'});return!first}
 function thanks(id){view={v:'thx',id};foot.hidden=true;
  app.innerHTML=`<div class="thanks"><div class="okc">✓</div><h2>${t(U.thx)}</h2><p>${t(U.thxP)}</p><div class="tbtn"><button type="button" class="btn" id="home">${t(U.home)}</button><button type="button" class="btn ghost" id="edit">${t(U.edit)}</button></div></div>`;window.scrollTo(0,0)}
@@ -453,9 +481,9 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
  if(b.id==='back'||b.id==='home'){home();return}
  const st=view.id&&S[view.id];if(!st)return;
  if(b.id==='edit'){st.step=0;dept(view.id);return}
- if(b.id==='prev'){st.step--;save();dept(view.id);return}
- if(b.id==='next'){st._tried=st.step;if(!validate(true))return;const d=D.find(x=>x.id===view.id);
-  if(st.step<d.steps.length-1){st.step++;save();dept(view.id)}else{st.sent=true;save();thanks(view.id)}return}
+ if(b.id==='prev'){const vs=visSteps(DD(view.id),st);st.step=vs.filter(i=>i<st.step).pop()||0;save();dept(view.id);return}
+ if(b.id==='next'){st._tried=st.step;if(!validate(true))return;const vs=visSteps(DD(view.id),st),nx=vs.find(i=>i>st.step);
+  if(nx!==undefined){st.step=nx;save();dept(view.id)}else{st.sent=true;save();thanks(view.id)}return}
  if(b.dataset.radd){st.rows[b.dataset.radd].push({});save();dept(view.id,true);return}
  if(b.dataset.rdel){st.rows[b.dataset.rdel].splice(+b.dataset.ri,1);save();dept(view.id,true);return}
  if(b.dataset.r){const q=REG[b.dataset.r],f=q.fields.find(x=>x.f===b.dataset.f),ri=+b.dataset.ri,j=+b.dataset.j;
