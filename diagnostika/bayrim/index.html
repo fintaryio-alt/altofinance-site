@@ -124,6 +124,7 @@ textarea.inp{min-height:76px;resize:vertical}
 .dep .mt{line-height:1.4}
 .crows{display:grid}.crow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:center;padding:8px 0;border-top:1px solid var(--border)}
 .crow>span{font-size:14.5px;min-width:0}.crow.chd{border:0;padding:0 0 4px}.crow.chd span{font-size:12.5px;color:var(--muted)}
+.sv{white-space:nowrap}.sv.off{color:var(--red)}
 </style>
 </head>
 <body>
@@ -340,7 +341,7 @@ const D=[
 
 const U={
  ttl:o('Диагностика <span>BAYRIM</span>','<span>BAYRIM</span> диагностикасы'),
- demo:o('Пример для обсуждения. Ответы никуда не отправляются и сохраняются только на этом устройстве.','Талқылауға арналған үлгі. Жауаптар ешқайда жіберілмейді, тек осы құрылғыда сақталады.'),
+ demo:o('Ответы сохраняются автоматически после каждого нажатия. Можно закрыть страницу и продолжить позже с этого же телефона.'),
  h:o('Финансовая диагностика компании','Компанияның қаржылық диагностикасы'),
  lead:o('Каждый отдел заполняет свой раздел. Нам важно, как процессы устроены на самом деле, а не как должны быть. Можно прерваться и продолжить позже.','Әр бөлім өз бөлімін толтырады. Бізге процестердің шын мәнінде қалай екені маңызды. Тоқтап, кейін жалғастыруға болады.'),
  r:[o('Выберите свой отдел','Өз бөліміңізді таңдаңыз'),o('Отвечайте кнопками, где можно','Мүмкін жерде батырмамен жауап беріңіз'),o('Не знаете — «Не знаю»','Білмесеңіз — «Білмеймін»'),o('Прикладывайте файлы, где просят','Сұралған жерде файл тіркеңіз')],
@@ -369,8 +370,11 @@ const U={
  fill:o('Ответьте на вопрос или нажмите «Не знаю».','Сұраққа жауап беріңіз немесе «Білмеймін» басыңыз.'),
  fillRows:o('Заполните хотя бы одну строку.','Кемінде бір жолды толтырыңыз.'),
  fillWho:o('Укажите имя и должность','Аты-жөні мен лауазымын көрсетіңіз'),
+ phone:o('Телефон для уточнений'),phonePh:o('+7 7__ ___ __ __'),fillPhone:o('Укажите телефон — так мы уточним напрямую и не будем беспокоить через руководителя'),
+ saved:o('Сохранено'),saving:o('Сохраняем…'),offline:o('Нет связи — ответы сохранены на телефоне и отправятся сами'),
+ upl:o('Загружаем…'),uplErr:o('Файл не загрузился, попробуйте ещё раз'),uplBig:o('Файл больше 50 МБ — разделите или пришлите частями'),
  thx:o('Спасибо! Раздел отправлен','Рақмет! Бөлім жіберілді'),
- thxP:o('Если появятся уточняющие вопросы, мы свяжемся. Ответы можно открыть и дополнить.','Нақтылау сұрақтары болса, хабарласамыз. Жауаптарды ашып, толықтыруға болады.'),
+ thxP:o('Ответы получены ALTO Finance. Если появятся уточнения, мы позвоним по указанному телефону. Ответы можно открыть и дополнить, например дослать файлы.'),
  home:o('К разделам','Бөлімдерге'),
  edit:o('Открыть ответы','Жауаптарды ашу'),
  del:o('Удалить','Жою'),
@@ -387,7 +391,21 @@ function blank(){const s={};D.forEach(d=>{const st={who:'',a:{},sums:{},files:{}
 let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!S)S=blank();{const b=blank();D.forEach(d=>{if(!S[d.id])S[d.id]=b[d.id]})}
 if(!KZ_OFF){try{L=localStorage.getItem(KEY+'-l')||'ru'}catch(e){}}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const API='https://app.altofinance.kz/diag/api',FORM='bayrim';
+let DEV=null;try{DEV=localStorage.getItem('bayrim-dev')}catch(e){}
+if(!DEV||!/^[a-z0-9]{8,40}$/.test(DEV)){DEV=(Date.now().toString(36)+Math.random().toString(36).slice(2,12)).replace(/[^a-z0-9]/g,'');try{localStorage.setItem('bayrim-dev',DEV)}catch(e){}}
+let SYNC='saved',syncT=null,syncing=false,again=false;
+function summary(){const o={};D.forEach(d=>{const st=S[d.id],n=doneN(d),m=mains(d).length;if(!n&&!st.who&&!st.sent)return;
+ let pt=null;if(d.id==='pts'){const v=st.a['0-0'];if(v!==undefined&&v!=='idk'){const q=d.qk['0-0'];pt=v===3?(st.a['0-0-s0']||'Другая'):t(lab(q.a[v]))}}
+ o[d.id]={name:t(d.n),who:st.who||'',phone:st.phone||'',n,m,sent:!!st.sent,step:st.step,point:pt}});return o}
+function showSync(){const e=document.getElementById('sv');if(e)e.textContent=SYNC==='off'?t(U.offline):SYNC==='saving'?t(U.saving):'✓ '+t(U.saved);if(e)e.classList.toggle('off',SYNC==='off')}
+async function sync(){if(syncing){again=true;return}syncing=true;SYNC='saving';showSync();
+ try{const r=await fetch(`${API}/state?f=${FORM}&d=${DEV}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data:S,summary:summary()})});if(!r.ok)throw 0;SYNC='saved'}
+ catch(e){SYNC='off';clearTimeout(syncT);syncT=setTimeout(sync,15000)}
+ syncing=false;showSync();if(again){again=false;sync()}}
+const queueSync=()=>{clearTimeout(syncT);syncT=setTimeout(sync,700)};
+window.addEventListener('online',()=>sync());
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}queueSync()};
 const app=document.getElementById('app'),foot=document.getElementById('foot'),footIn=document.getElementById('footIn');
 const filled=v=>v!==undefined&&v!==null&&v!==''&&!(Array.isArray(v)&&!v.length);
 const rowFilled=(row,fields)=>fields.some(f=>f.k!=='file'&&filled(row&&row[f.f]));
@@ -466,21 +484,21 @@ function dept(id,keepScroll){const d=DD(id),st=S[id];view={v:'dep',id};CD=d;CS=s
  let h=`<button type="button" class="back" id="back">${t(U.back)}</button><div class="dh"><span class="chip">${t(d.n)}</span><span class="stepn">${t(U.step,{a:pos+1,b:vs.length})}</span></div><div class="dots">${vs.map((s,i)=>`<i class="${i<=pos?'on':''}"></i>`).join('')}</div>
  <div class="st"><h2>${t(sp.n)}</h2>${sp.h?`<p class="sh">${t(sp.h)}</p>`:''}</div>`;
  if(sp.why)h+=`<div class="why"><b>${t(U.why)}</b>${t(WHY)}</div>`;
- if(si===0)h+=`<div class="card" id="c-who"><div class="qt">${t(U.who)}</div><input class="inp" id="who" placeholder="${t(U.whoPh)}" value="${esc(st.who)}"><div class="err" hidden>${t(U.fillWho)}</div></div>`;
+ if(si===0)h+=`<div class="card" id="c-who"><div class="qt">${t(U.who)}</div><input class="inp" id="who" placeholder="${t(U.whoPh)}" value="${esc(st.who)}"><div class="qt" style="margin:12px 0 8px;font-size:15px">${t(U.phone)}</div><input class="inp" id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="${t(U.phonePh)}" value="${esc(st.phone||'')}"><div class="err" hidden>${t(U.fillWho)}. ${t(U.fillPhone)}</div></div>`;
  const all=mains(d),total=all.length;let num=all.findIndex(([k])=>k.split('-')[0]==String(si));
  sp.q.forEach((q,qi)=>{const key=si+'-'+qi;if(!qVis(d,st,q))return;num++;
   if(q.k==='rows'||q.k==='grid'){h+=`<div id="c-${key}" class="blk">${rowsHTML(d,q,key,st)}<div class="err" hidden>${t(U.fillRows)}</div></div>`;return}
   h+=`<div class="card" id="c-${key}"><div class="qn">${num} / ${total}</div><div class="qt">${t(q.t)}</div>${qBody(q,key,st)}<div class="err" hidden>${t(U.fill)}</div></div>`});
  app.innerHTML=h;
  const last=pos===vs.length-1;
- footIn.innerHTML=`${pos>0?`<button type="button" class="btn ghost" id="prev">${t(U.prev)}</button>`:''}<div class="pr"><span id="prT"></span><div class="bar"><i id="prB"></i></div></div><button type="button" class="btn" id="next">${last?t(U.send):t(U.next)}</button>`;
- foot.hidden=false;prog();
+ footIn.innerHTML=`${pos>0?`<button type="button" class="btn ghost" id="prev">${t(U.prev)}</button>`:''}<div class="pr"><span id="prT"></span> · <span id="sv" class="sv"></span><div class="bar"><i id="prB"></i></div></div><button type="button" class="btn" id="next">${last?t(U.send):t(U.next)}</button>`;
+ foot.hidden=false;prog();showSync();
  window.scrollTo(0,keepScroll?y:0);
  if(st._tried===si)validate(false)}
 function prog(){const d=DD(view.id),n=doneN(d),m=mains(d).length;document.getElementById('prT').textContent=t(U.ans,{a:n,b:m});document.getElementById('prB').style.width=(m?n/m*100:0)+'%'}
 function validate(scroll){const d=DD(view.id),st=S[d.id],si=st.step;let first=null;
  const mark=(c,bad)=>{if(!c)return;c.classList.toggle('miss',bad);const e=c.querySelector(':scope>.err');if(e)e.hidden=!bad;if(bad&&!first)first=c};
- if(si===0)mark(document.getElementById('c-who'),!st.who.trim());
+ if(si===0)mark(document.getElementById('c-who'),!st.who.trim()||(st.phone||'').replace(/\D/g,'').length<10);
  d.steps[si].q.forEach((q,qi)=>{if(!qVis(d,st,q))return;const key=si+'-'+qi;mark(document.getElementById('c-'+key),!isAns(d,st,key,q))});
  if(first&&scroll)first.scrollIntoView({behavior:'smooth',block:'center'});return!first}
 function thanks(id){view={v:'thx',id};foot.hidden=true;
@@ -510,12 +528,21 @@ document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)r
   if(v===undefined)delete st.a[key];else st.a[key]=v;save();dept(view.id,true)}});
 document.addEventListener('input',e=>{const el=e.target,st=view.id&&S[view.id];if(!st)return;
  if(el.id==='who')st.who=el.value;
+ else if(el.id==='phone')st.phone=el.value;
  else if(el.classList.contains('rf')){const rows=st.rows[el.dataset.r],ri=+el.dataset.ri;(rows[ri]||(rows[ri]={}))[el.dataset.f]=el.value}
  else if(el.dataset.key){st.a[el.dataset.key]=el.value;const c=el.closest('.card,.sub'),idk=c&&c.querySelector(`.idk[data-key="${el.dataset.key}"]`);if(idk)idk.classList.remove('on')}
  else return;save();prog()});
-document.addEventListener('change',e=>{const el=e.target;if(el.type!=='file'||!el.dataset.file)return;const st=S[view.id];
- st.files[el.dataset.file]=[...el.files].map(f=>f.name);if(st.a[el.dataset.file]==='idk')delete st.a[el.dataset.file];save();dept(view.id,true)});
+document.addEventListener('change',async e=>{const el=e.target;if(el.type!=='file'||!el.dataset.file)return;const id=view.id,st=S[id],fk=el.dataset.file,files=[...el.files];
+ const box=el.closest('.file'),ft=box&&box.querySelector('.ft');
+ for(const f of files){
+  if(f.size>50*1024*1024){if(ft)ft.textContent=t(U.uplBig);continue}
+  if(ft)ft.textContent=t(U.upl)+' '+f.name;
+  try{const r=await fetch(`${API}/file?f=${FORM}&d=${DEV}`,{method:'POST',headers:{'X-File-Name':encodeURIComponent(f.name),'X-QKey':encodeURIComponent(id+'|'+fk)},body:f});
+   if(!r.ok)throw 0;(st.files[fk]=st.files[fk]||[]).push(f.name)}
+  catch(_){if(ft)ft.textContent=t(U.uplErr);st._uplErr=fk;save();return}}
+ if(st.a[fk]==='idk')delete st.a[fk];save();if(view.id===id)dept(id,true)});
 render();
+if(Object.values(summary()).length)sync();
 </script>
 </body>
 </html>

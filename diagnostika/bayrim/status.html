@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Диагностика BAYRIM — статус</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#F5F7FA;--surface:#fff;--text:#172B4D;--muted:#596579;--border:#DFE5EE;--navy:#0F2A5C;--accent-bg:#EAF1FF;--accent-text:#1D4ED8;--red:#DC2626;--red-bg:#FDECEC;--font:'Inter',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14.5px/1.5 var(--font)}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:22px;margin:0 0 4px}.sub{color:var(--muted);margin:0 0 18px}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px}.tile .l{color:var(--muted);font-size:13px}.tile .v{font-size:24px;font-weight:700;color:var(--navy)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.card h2{font-size:16px;margin:0 0 8px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.card h2 span{font-weight:500;font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}th{text-align:left;color:var(--muted);font-weight:600;font-size:12.5px;padding:6px 8px;border-bottom:1px solid var(--border)}
+td{padding:8px;border-bottom:1px solid var(--border);vertical-align:top}tr:last-child td{border-bottom:0}
+.tw{overflow-x:auto}
+.pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.p-sent{background:var(--navy);color:#fff}.p-work{background:var(--accent-bg);color:var(--accent-text)}.p-none{background:var(--red-bg);color:var(--red)}
+.bar{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;min-width:80px;margin-top:4px}.bar i{display:block;height:100%;background:var(--navy)}
+.mu{color:var(--muted)}.files{font-size:12.5px;color:var(--muted)}
+button{border:1px solid var(--border);background:var(--surface);border-radius:8px;padding:6px 10px;font:500 13px var(--font);cursor:pointer;color:var(--text)}
+button:hover{border-color:var(--navy)}
+.empty{color:var(--red);font-weight:600}
+.err{background:var(--red-bg);color:var(--red);padding:12px 14px;border-radius:10px}
+@media(max-width:700px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body><div class="wrap">
+<h1>Диагностика BAYRIM — кто заполнил</h1>
+<p class="sub" id="upd">Загрузка…</p>
+<div id="app"></div>
+</div>
+<script>
+const API='https://app.altofinance.kz/diag/api',FORM='bayrim',LINK='https://altofinance.kz/diagnostika/bayrim/';
+const DEPTS=[['own','Собственник'],['acc','Бухгалтерия и финансы'],['buy','Закуп и склад'],['shop','Цех'],['pts','Точки'],['sales','Продажи и доставка']];
+const POINTS=['ул. Карменова, 1','ул. Мангелик Ел, 11А','пр. Ауэзова, 12'];
+const A=location.hash.slice(1);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const when=ts=>{if(!ts)return'—';const d=new Date(ts*1000),m=Math.round((Date.now()/1000-ts)/60);return m<1?'только что':m<60?m+' мин назад':m<1440?Math.round(m/60)+' ч назад':d.toLocaleDateString('ru-RU')+' '+d.toTimeString().slice(0,5)};
+function remind(x){return `Здравствуйте${x.who?', '+x.who.split(',')[0]:''}! Это ALTO Finance, по диагностике BAYRIM. Раздел «${x.name}» заполнен на ${x.n} из ${x.m}. Продолжить можно по той же ссылке с этого же телефона — всё сохранено: ${LINK}`}
+async function copy(txt,btn){try{await navigator.clipboard.writeText(txt);btn.textContent='Скопировано'}catch(e){prompt('Скопируйте текст:',txt)}}
+async function load(){
+ if(!A){document.getElementById('app').innerHTML='<div class="err">Откройте страницу по ссылке с ключом доступа.</div>';return}
+ let d;try{const r=await fetch(`${API}/admin?f=${FORM}&a=${encodeURIComponent(A)}`,{cache:'no-store'});if(!r.ok)throw r.status;d=await r.json()}
+ catch(e){document.getElementById('app').innerHTML=`<div class="err">Нет доступа к данным (${e}). Проверьте ссылку.</div>`;return}
+ const rows={};DEPTS.forEach(([k])=>rows[k]=[]);let nfiles=0;
+ d.devices.forEach(dev=>{nfiles+=dev.files.length;Object.entries(dev.summary||{}).forEach(([k,x])=>{if(rows[k])rows[k].push({...x,dev:dev.device,updated:dev.updated,files:dev.files.filter(f=>(f.q||'').startsWith(k+'|'))})})});
+ const sentDepts=DEPTS.filter(([k])=>rows[k].some(x=>x.sent)).length;
+ const ptsSent=new Set(rows.pts.filter(x=>x.sent&&x.point).map(x=>x.point));
+ let h=`<div class="tiles"><div class="tile"><div class="l">Разделов отправлено</div><div class="v">${sentDepts} из ${DEPTS.length}</div></div>
+ <div class="tile"><div class="l">Точек отправлено</div><div class="v">${POINTS.filter(p=>ptsSent.has(p)).length} из ${POINTS.length}</div></div>
+ <div class="tile"><div class="l">Человек начали</div><div class="v">${d.devices.length}</div></div>
+ <div class="tile"><div class="l">Файлов получено</div><div class="v">${nfiles}</div></div></div>`;
+ DEPTS.forEach(([k,name])=>{const list=rows[k].sort((a,b)=>b.updated-a.updated);
+  let extra='';if(k==='pts'){const miss=POINTS.filter(p=>!rows.pts.some(x=>x.point===p));extra=miss.length?` · <span class="empty">не начаты: ${miss.join(', ')}</span>`:''}
+  h+=`<div class="card"><h2>${name}<span>${list.length?list.filter(x=>x.sent).length+' отправлено, '+list.filter(x=>!x.sent).length+' в работе':'<span class="empty">никто не начал</span>'}${extra}</span></h2>`;
+  if(list.length){h+=`<div class="tw"><table><tr><th>Кто</th>${k==='pts'?'<th>Точка</th>':''}<th>Заполнено</th><th>Статус</th><th>Последнее изменение</th><th>Файлы</th><th></th></tr>`;
+   list.forEach((x,i)=>{h+=`<tr><td><b>${esc(x.who)||'<span class="mu">имя не указано</span>'}</b><br><span class="mu">${esc(x.phone)||''}</span></td>${k==='pts'?`<td>${esc(x.point)||'—'}</td>`:''}
+    <td>${x.n} из ${x.m}<div class="bar"><i style="width:${x.m?x.n/x.m*100:0}%"></i></div></td>
+    <td><span class="pill ${x.sent?'p-sent':'p-work'}">${x.sent?'Отправлено':'В работе'}</span></td><td>${when(x.updated)}</td>
+    <td class="files">${x.files.length?x.files.map(f=>esc(f.name)).join('<br>'):'—'}</td>
+    <td>${x.sent?'':`<button data-r="${k}:${i}">Текст напоминания</button>`}</td></tr>`});
+   h+='</table></div>'}
+  h+='</div>'});
+ document.getElementById('app').innerHTML=h;
+ document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const[k,i]=b.dataset.r.split(':');copy(remind(rows[k].sort((a,c)=>c.updated-a.updated)[+i]),b)});
+ document.getElementById('upd').textContent='Обновлено '+new Date().toTimeString().slice(0,5)+' · обновляется само каждую минуту. Ссылка для команды: '+LINK;
+}
+load();setInterval(load,60000);
+</script>
+</body>
+</html>
